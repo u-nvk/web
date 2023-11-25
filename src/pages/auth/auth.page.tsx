@@ -4,10 +4,22 @@ import {
   ConnectEvents,
   VKSilentAuthPayload,
 } from "@vkontakte/superappkit";
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
+import { Navigate, redirect, useNavigate } from "react-router-dom";
+import {
+  isValidProfileData,
+  ProfileDataContext,
+} from "../../context/profile-data.context";
+import {
+  exchangeVkSilentTokenApi,
+  useExchangeVkSilentToken,
+} from "../../hooks/http";
 import styles from "./styles/auth.page.styles.module.css";
 
-const registerVkAuth = (placeToInsertFrame: HTMLDivElement) => {
+const registerVkAuth = (
+  placeToInsertFrame: HTMLDivElement,
+  setProfileData: (accessToken: string) => void
+) => {
   Config.init({
     appId: 51785691, // идентификатор приложения
   });
@@ -26,21 +38,17 @@ const registerVkAuth = (placeToInsertFrame: HTMLDivElement) => {
         case ConnectEvents.OneTapAuthEventsSDK.LOGIN_SUCCESS: // = 'VKSDKOneTapAuthLoginSuccess'
           console.log(e);
 
-          fetch("https://urfu-nvk.ru/identity/api/v1/exchange-vk-token", {
-            method: "POST",
-            body: JSON.stringify({
-              vkToken: (e.payload as VKSilentAuthPayload).token,
-              vkUuid: (e.payload as VKSilentAuthPayload).uuid,
-              firstname: (e.payload as VKSilentAuthPayload).user.first_name,
-              lastname: (e.payload as VKSilentAuthPayload).user.last_name,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-            .then((a) => a.json())
-            .then((r) => console.log(r))
-            .then(() => {});
+          // eslint-disable-next-line no-case-declarations
+          const payload: VKSilentAuthPayload = e.payload as VKSilentAuthPayload;
+
+          exchangeVkSilentTokenApi(
+            payload.token,
+            payload.uuid,
+            payload.user.first_name,
+            payload.user.last_name
+          ).then((result) => {
+            setProfileData(result.accessToken);
+          });
 
           return false;
         // Для этих событий нужно открыть полноценный VK ID чтобы
@@ -85,20 +93,30 @@ const registerVkAuth = (placeToInsertFrame: HTMLDivElement) => {
 
 export const AuthPage = () => {
   const ref = useRef<HTMLDivElement>(null);
+  const profileContext = useContext(ProfileDataContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("HERE");
-
-    if (ref.current) {
-      registerVkAuth(ref.current);
-    }
-
-    return () => {
+    if (!profileContext.data || !profileContext.data.accessToken) {
       if (ref.current) {
-        ref.current.innerHTML = "";
+        registerVkAuth(ref.current, (accesstoken: string) => {
+          profileContext.setData?.({ accessToken: accesstoken });
+
+          navigate("/cabinet/profile");
+        });
       }
-    };
+
+      return () => {
+        if (ref.current) {
+          ref.current.innerHTML = "";
+        }
+      };
+    }
   }, []);
+
+  if (isValidProfileData(profileContext.data?.())) {
+    return <Navigate to={"/cabinet/profile"} replace />;
+  }
 
   return (
     <div className={styles.container}>

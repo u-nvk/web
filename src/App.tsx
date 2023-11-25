@@ -8,6 +8,7 @@ import {
   ProfileData,
   ProfileDataContext,
 } from "./context/profile-data.context";
+import { useStorage } from "./hooks/utils/storage.hook";
 
 const routes = createBrowserRouter([
   {
@@ -28,13 +29,27 @@ const routes = createBrowserRouter([
 
 function App() {
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
+  const storage = useStorage();
 
   return (
     <>
       <ProfileDataContext.Provider
         value={{
-          data: profileData,
-          setData: setProfileData,
+          data: () => {
+            if (profileData) {
+              return profileData;
+            }
+
+            if (storage.read("profile")) {
+              return JSON.parse(storage.read("profile") ?? "{}");
+            }
+
+            return null;
+          },
+          setData: (data: ProfileData) => {
+            setProfileData(data);
+            storage.write("profile", JSON.stringify(data));
+          },
         }}
       >
         <RouterProvider router={routes} />
