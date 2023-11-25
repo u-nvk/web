@@ -2,13 +2,13 @@ interface ExchangeVkTokenResponseDto {
   accessToken: string;
 }
 
-export const exchangeVkSilentTokenApi = (
+export const exchangeVkSilentTokenApi = async (
   vkToken: string,
   vkUUID: string,
   firstname: string,
   lastname: string
 ): Promise<{ accessToken: string }> => {
-  return fetch("https://urfu-nvk.ru/identity/api/v1/exchange-vk-token", {
+  const res = await fetch("https://urfu-nvk.ru/identity/api/v1/exchange-vk-token", {
     method: "POST",
     body: JSON.stringify({
       vkToken: vkToken,
@@ -19,7 +19,7 @@ export const exchangeVkSilentTokenApi = (
     headers: {
       "Content-Type": "application/json",
     },
-  })
-    .then((res) => res.json())
-    .then((responseDto: ExchangeVkTokenResponseDto) => responseDto);
+  });
+  const responseDto: ExchangeVkTokenResponseDto = await res.json();
+  return responseDto;
 };

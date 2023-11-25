@@ -1,31 +1,13 @@
 import "./App.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { AuthPage } from "./pages/auth/auth.page";
-import { CabinetLayout } from "./pages/cabinet/cabinet.layout";
-import { ProfilePage } from "./pages/cabinet/pages/profile/profile.page";
+import { RouterProvider } from "react-router-dom";
 import { useState } from "react";
 import {
   ProfileData,
   ProfileDataContext,
 } from "./context/profile-data.context";
 import { useStorage } from "./hooks/utils/storage.hook";
-
-const routes = createBrowserRouter([
-  {
-    path: "auth",
-    element: <AuthPage />,
-  },
-  {
-    path: "cabinet",
-    element: <CabinetLayout />,
-    children: [
-      {
-        path: "profile",
-        element: <ProfilePage />,
-      },
-    ],
-  },
-]);
+import { StorageKey } from "./enums";
+import { routes } from "./routes";
 
 function App() {
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
@@ -40,15 +22,15 @@ function App() {
               return profileData;
             }
 
-            if (storage.read("profile")) {
-              return JSON.parse(storage.read("profile") ?? "{}");
+            if (storage.read(StorageKey.profile)) {
+              return JSON.parse(storage.read(StorageKey.profile) ?? "{}");
             }
 
             return null;
           },
           setData: (data: ProfileData) => {
             setProfileData(data);
-            storage.write("profile", JSON.stringify(data));
+            storage.write(StorageKey.profile, JSON.stringify(data));
           },
         }}
       >
