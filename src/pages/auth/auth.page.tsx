@@ -5,15 +5,12 @@ import {
   VKSilentAuthPayload,
 } from "@vkontakte/superappkit";
 import { useContext, useEffect, useRef } from "react";
-import { Navigate, redirect, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { exchangeVkSilentTokenApi } from "../../api";
 import {
   isValidProfileData,
   ProfileDataContext,
 } from "../../context/profile-data.context";
-import {
-  exchangeVkSilentTokenApi,
-  useExchangeVkSilentToken,
-} from "../../hooks/http";
 import styles from "./styles/auth.page.styles.module.css";
 
 const registerVkAuth = (
@@ -27,7 +24,8 @@ const registerVkAuth = (
   const oneTapButton = Connect.buttonOneTapAuth({
     // Обязательный параметр в который нужно добавить обработчик событий приходящих из SDK
     callback: function (e) {
-      debugger;
+      console.log(e);
+
       const type = e.type;
 
       if (!type) {
@@ -56,18 +54,22 @@ const registerVkAuth = (
         case ConnectEvents.OneTapAuthEventsSDK.FULL_AUTH_NEEDED: //  = 'VKSDKOneTapAuthFullAuthNeeded'
         case ConnectEvents.OneTapAuthEventsSDK.PHONE_VALIDATION_NEEDED: // = 'VKSDKOneTapAuthPhoneValidationNeeded'
         case ConnectEvents.ButtonOneTapAuthEventsSDK.SHOW_LOGIN: // = 'VKSDKButtonOneTapAuthShowLogin'
+          console.log("aslkdjasd");
+
           return Connect.redirectAuth({
-            url: "http://localhost/auth",
+            url: "https://urfu-nvk.ru/auth",
             state: "",
           }); // url - строка с url, на который будет произведён редирект после авторизации.
         // state - состояние вашего приложение или любая произвольная строка, которая будет добавлена к url после авторизации.
         // Пользователь перешел по кнопке "Войти другим способом"
         case ConnectEvents.ButtonOneTapAuthEventsSDK.SHOW_LOGIN_OPTIONS: // = 'VKSDKButtonOneTapAuthShowLoginOptions'
+          console.log(21212);
+
           // Параметр screen: phone позволяет сразу открыть окно ввода телефона в VK ID
           // Параметр url: ссылка для перехода после авторизации. Должен иметь https схему. Обязательный параметр.
           return Connect.redirectAuth({
             screen: "phone",
-            url: "https://urfu-nvk.ru/integration",
+            url: "https://urfu-nvk.ru/auth",
           });
       }
 
@@ -97,7 +99,7 @@ export const AuthPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!profileContext.data || !profileContext.data.accessToken) {
+    if (!isValidProfileData(profileContext)) {
       if (ref.current) {
         registerVkAuth(ref.current, (accesstoken: string) => {
           profileContext.setData?.({ accessToken: accesstoken });
