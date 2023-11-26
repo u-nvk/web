@@ -1,4 +1,4 @@
-.buttonText {
+  .buttonText {
     color: black;
     font-size: 20;
     font-family: "Inter", sans-serif;
@@ -16,7 +16,7 @@
     display: flex;
   }
 
-.priceStyle {
+  .priceStyle {
     width: 100%;
     flex: 0.23;
     flex-direction: row;
@@ -103,4 +103,14 @@
     background-color: #DCEDFF;
     border-color: #9FCAFF;
     border-style: solid;
+  }
+
+  .iconText {
+    margin-right: 10px;
+    font-size: 21px;
+    font-weight: 600;
+    text-align: left;
+    color: black;
+    font-family: "Inter", sans-serif;
+    display: inline-block;
   }
