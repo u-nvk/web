@@ -1,4 +1,5 @@
-import styles from "../../../../styles/order-view.page.module.css"
+import styles from "../../../../styles/order-view.page.module.css";
+import vkIcon from '../../../../../../icons/VK.svg';
 
 export const OrderViewPage = () => {
   return <div className={styles.container}>
@@ -40,9 +41,10 @@ export const OrderViewPage = () => {
             flexWrap: 'nowrap',
             alignItems: 'center',
           }}>
-          <p className={styles.infoValue}>
+          <p className={styles.iconText}>
             Маркелов Артемий
           </p>
+          <img src={vkIcon} alt="VK" />
           {/* <div className={{marginLeft: '5%'}}>
             <TouchableOpacity
               onPress={() =>
