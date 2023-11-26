@@ -1,4 +1,4 @@
-import styles from "../styles/oneOrder.component.module.css";
+import styles from "./styles/one-order.component.module.css";
 
 export const OneOrderComponent = () => {
   return (

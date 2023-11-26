@@ -24,11 +24,10 @@
 
 .orderRouteNameText {
   font-style: normal;
-  font-weight: 500;
   line-height: normal;
-  font-size: 16px;
+  font-size: 14px;
   color: black;
-  font-family: "Inter", sans-serif;
+  font-family: "InterRegular";
 }
 
 .orderInfoDiv {
@@ -71,13 +70,12 @@
   font-style: normal;
   font-weight: 300;
   line-height: normal;
-  font-family: "Inter", sans-serif;
+  font-family: "InterLight", sans-serif;
 }
 
 .orderInfoElementValue {
-  font-size: 30px;
+  font-size: 24px;
   font-style: normal;
-  font-weight: 600;
   line-height: normal;
-  font-family: "Inter", sans-serif;
+  font-family: "InterMedium";
 }
