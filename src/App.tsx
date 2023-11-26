@@ -9,6 +9,8 @@ import { useStorage } from "./hooks/utils/storage.hook";
 import { StorageKey } from "./enums";
 import { routes } from "./routes";
 
+const Dima = "Бог";
+
 function App() {
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
   const storage = useStorage();
