@@ -1,7 +1,7 @@
-import styles from "../../../../styles/order-view.page.module.css";
+import styles from "./styles/order-view.page.module.css";
 import vkIcon from '../../../../../../icons/VK.svg';
 
-export const OrderViewPage = () => {
+export const OrderViewPage = () => { 
   return <div className={styles.container}>
   <div className={styles.infoAndButtonView}>
     <div className={styles.infoView}>
@@ -81,12 +81,14 @@ export const OrderViewPage = () => {
           Сбербанк
         </p>
       </div>
-      <button className={styles.buttonJoin}>Присоединиться</button>
     </div>
 
     {/* <TouchableOpacity className={styles.buttonStyle}>
       <p className={styles.buttonText}>Присоединиться</p>
     </TouchableOpacity> */}
+  </div>
+  <div>
+  <button className={styles.buttonJoin}>Присоединиться</button>
   </div>
 </div>
   

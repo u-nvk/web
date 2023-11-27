@@ -1,4 +1,4 @@
-.orderDiv {
+.container {
   display: flex;
   flex-direction: column;
   padding: 0 5%;
@@ -8,13 +8,13 @@
   box-sizing: border-box;
   width: 100%;
   background-color: #fff;
-  height: 120px;
+  height: 106px;
   border-radius: 10px;
   align-items: center;
   justify-content: center;
 }
 
-.orderRouteNameDiv {
+.directionContainer {
   width: 100%;
   flex: 0.4;
   display: flex;
@@ -22,15 +22,12 @@
   justify-content: center;
 }
 
-.orderRouteNameText {
-  font-style: normal;
-  line-height: normal;
+.directionText {
   font-size: 14px;
-  color: black;
-  font-family: "InterRegular";
+  color: var(--text-color);
 }
 
-.orderInfoDiv {
+.infoContainer {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -65,17 +62,11 @@
 }
 
 .orderInfoElementDescription {
-  color: #000;
+  color: var(--text-color);
   font-size: 10px;
-  font-style: normal;
-  font-weight: 300;
-  line-height: normal;
-  font-family: "InterLight", sans-serif;
 }
 
 .orderInfoElementValue {
   font-size: 24px;
-  font-style: normal;
-  line-height: normal;
-  font-family: "InterMedium";
+  color: var(--text-color);
 }
