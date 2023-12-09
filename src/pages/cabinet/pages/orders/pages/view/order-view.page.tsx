@@ -82,6 +82,7 @@ export const OrderViewPage = () => {
         </p>
       </div>
     </div>
+    <button className={styles.buttonJoin}>Присоединиться</button>
 
     {/* <TouchableOpacity className={styles.buttonStyle}>
       <p className={styles.buttonText}>Присоединиться</p>
@@ -91,7 +92,5 @@ export const OrderViewPage = () => {
   <button className={styles.buttonJoin}>Присоединиться</button>
   </div>
 </div>
-  
-  ;
 }
 
