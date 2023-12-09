@@ -81,15 +81,13 @@ export const OrderViewPage = () => {
           Сбербанк
         </p>
       </div>
-      <button className={styles.buttonJoin}>Присоединиться</button>
     </div>
+    <button className={styles.buttonJoin}>Присоединиться</button>
 
     {/* <TouchableOpacity className={styles.buttonStyle}>
       <p className={styles.buttonText}>Присоединиться</p>
     </TouchableOpacity> */}
   </div>
 </div>
-  
-  ;
 }
 
