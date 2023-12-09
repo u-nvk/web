@@ -105,7 +105,7 @@
     border-style: solid;
   }
 
-  .iconText {
+  .iconVkText {
     margin-right: 10px;
     font-size: 21px;
     font-weight: 600;
@@ -113,4 +113,8 @@
     color: black;
     font-family: "Inter", sans-serif;
     display: inline-block;
+  }
+
+  .iconBack {
+    margin-right: 100%;
   }

@@ -1,8 +1,13 @@
 import styles from "./styles/order-view.page.module.css";
 import vkIcon from '../../../../../../icons/VK.svg';
+import back from '../../../../../../icons/back.svg';
+import { useNavigate } from "react-router-dom";
 
 export const OrderViewPage = () => { 
+  const navigate = useNavigate()
+  const handleClick = () => navigate('../orders');
   return <div className={styles.container}>
+<img className={styles.iconBack} src={back} width="7%" height="7%" alt='back-arrow' onClick={handleClick} />
   <div className={styles.infoAndButtonView}>
     <div className={styles.infoView}>
       <div style={{marginLeft: -10, marginTop: 5, width: '100%', flex: 0.1}}>
@@ -41,7 +46,7 @@ export const OrderViewPage = () => {
             flexWrap: 'nowrap',
             alignItems: 'center',
           }}>
-          <p className={styles.iconText}>
+          <p className={styles.iconVkText}>
             Маркелов Артемий
           </p>
           <img src={vkIcon} alt="VK" />
@@ -87,9 +92,6 @@ export const OrderViewPage = () => {
     {/* <TouchableOpacity className={styles.buttonStyle}>
       <p className={styles.buttonText}>Присоединиться</p>
     </TouchableOpacity> */}
-  </div>
-  <div>
-  <button className={styles.buttonJoin}>Присоединиться</button>
   </div>
 </div>
 }
