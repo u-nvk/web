@@ -1,5 +1,11 @@
-import { useContext } from "react";
-import { Link, Navigate, Outlet } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import {
+  Link,
+  Navigate,
+  Outlet,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import {
   isValidProfileData,
   ProfileDataContext,
@@ -10,6 +16,15 @@ import OrdersIcon from "../../icons/orders.svg";
 import ProfileIcon from "../../icons/profile.svg";
 
 export const CabinetLayout = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.pathname === "/cabinet/") {
+      navigate("/cabinet/orders", { replace: true });
+    }
+  }, [location.pathname, navigate]);
+
   const profileContext = useContext(ProfileDataContext);
 
   if (!isValidProfileData(profileContext.data?.())) {

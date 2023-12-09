@@ -104,7 +104,7 @@ export const AuthPage = () => {
         registerVkAuth(ref.current, (accesstoken: string) => {
           profileContext.setData?.({ accessToken: accesstoken });
 
-          navigate("/cabinet/profile");
+          navigate("/cabinet/orders");
         });
       }
 

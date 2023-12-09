@@ -1,36 +1,57 @@
 import styles from "./styles/one-order.component.module.css";
 
-export const OneOrderComponent = () => {
+type RouteProps = {
+  route: string;
+  departureTime: string;
+  price: string;
+  emptySeat: number;
+};
+export const OneOrderComponent = ({
+  route,
+  departureTime,
+  price,
+  emptySeat,
+}: RouteProps) => {
   return (
     <div className={styles.container}>
       <div className={styles.directionContainer}>
-        <p className={`${styles.directionText} mediumText`} >
-          Кампус -{'>'} Розы Люксембург 49
-        </p>
+        <p className={`${styles.directionText} mediumText`}>{route}</p>
       </div>
       <div className={styles.infoContainer}>
         <div
           className={`${styles.orderInfoElementDiv} ${styles.orderInfoElementDivFirst}`}
         >
           <div className={styles.orderInfoElementDivText}>
-            <p className={`${styles.orderInfoElementDescription} lightText`}>отправление</p>
-            <p className={`${styles.orderInfoElementValue} mediumText`}>21:18</p>
+            <p className={`${styles.orderInfoElementDescription} lightText`}>
+              отправление
+            </p>
+            <p className={`${styles.orderInfoElementValue} mediumText`}>
+              {departureTime}
+            </p>
           </div>
         </div>
         <div
           className={`${styles.orderInfoElementDiv} ${styles.orderInfoElementDivSecond}`}
         >
           <div className={styles.orderInfoElementDivText}>
-            <p className={`${styles.orderInfoElementDescription} lightText`}>стоимость</p>
-            <p className={`${styles.orderInfoElementValue} mediumText`}>100₽</p>
+            <p className={`${styles.orderInfoElementDescription} lightText`}>
+              стоимость
+            </p>
+            <p className={`${styles.orderInfoElementValue} mediumText`}>
+              {price}₽
+            </p>
           </div>
         </div>
         <div
           className={`${styles.orderInfoElementDiv} ${styles.orderInfoElementDivThird}`}
         >
           <div className={styles.orderInfoElementDivText}>
-            <p className={`${styles.orderInfoElementDescription} lightText`}>свободно</p>
-            <p className={`${styles.orderInfoElementValue} mediumText`}>2</p>
+            <p className={`${styles.orderInfoElementDescription} lightText`}>
+              свободно
+            </p>
+            <p className={`${styles.orderInfoElementValue} mediumText`}>
+              {emptySeat}
+            </p>
           </div>
         </div>
       </div>
