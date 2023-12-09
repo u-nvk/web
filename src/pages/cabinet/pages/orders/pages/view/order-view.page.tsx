@@ -88,9 +88,6 @@ export const OrderViewPage = () => {
       <p className={styles.buttonText}>Присоединиться</p>
     </TouchableOpacity> */}
   </div>
-  <div>
-  <button className={styles.buttonJoin}>Присоединиться</button>
-  </div>
 </div>
 }
 
