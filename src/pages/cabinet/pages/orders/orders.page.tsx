@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { OneOrderComponent } from "./components/one-order/one-order.component";
-import styles from "../../styles/orders.page.styles.module.css";
+import styles from "./styles/orders.page.styles.module.css";
 
 export const OrdersPage = () => {
   return (

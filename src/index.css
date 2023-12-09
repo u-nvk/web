@@ -46,6 +46,7 @@ table {
 
 :root {
   --main-bg-color: #F3F2F8;
+  --text-color: #000000;
 }
 
 @font-face {
@@ -58,7 +59,7 @@ table {
 @font-face {
     font-family: "InterLight";
     src: local("InterLight"),
-    url("./fonts/Inter/Inter-Ligth.ttf") format("truetype");
+    url("./fonts/Inter/Inter-Light.ttf") format("truetype");
     font-weight: light;
 }
 
@@ -95,4 +96,11 @@ table {
     font-style: normal;
     line-height: normal;
     font-family: "InterRegular";
+}
+
+.lightText {
+    font-weight: 300;
+    font-style: normal;
+    line-height: normal;
+    font-family: "InterLight";
 }
