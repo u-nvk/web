@@ -1,0 +1,28 @@
+.chipList {
+    display: flex;
+    justify-content: space-between;
+}
+
+.chip {
+    width: 171px;
+    height: 31px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.activeWrapper {
+    border: 1px solid #9fcaff;
+    background: #dcedff;
+}
+
+.inActiveWrapper {
+    border-radius: 8px;
+    background-color: white;
+}
+
+.activeText {
+    color: #0266D6
+}

@@ -15,12 +15,13 @@ const parseJwt = (token: string) => {
   return JSON.parse(jsonPayload);
 };
 
-export const useJwtDecoder = <DecodeView extends Record<string, unknown>>(
-  jwtToken: string
-) => {
-  try {
+export const useJwtDecoder = () => {
+  return <DecodeView extends Record<string, unknown>>(jwtToken: string) => {
+    // try {
+    //   return parseJwt(jwtToken) as DecodeView;
+    // } catch (e) {
+    //   // TODO:
+    // }
     return parseJwt(jwtToken) as DecodeView;
-  } catch (e) {
-    // TODO:
   }
 };
