@@ -5,6 +5,8 @@ import {useEffect, useState} from "react";
 import {ChipsComponent, IChip} from "../../../../components/chips/chips.component.tsx";
 import {getOrders, GetOrdersResponseDto} from "../../../../api";
 import {useAccessToken, useIdFromToken} from "../../../../hooks/utils/use-id-from-token.hook.ts";
+import {formatTimePipe} from "../../../../pipes/format-time.pipe.ts";
+import {formatRoutePipe} from "../../../../pipes/format-route.pipe.ts";
 
 const defaultDirections: IChip[] = [
   {
@@ -24,48 +26,53 @@ export const OrdersPage = () => {
   const [visibleOrders, setVisibleOrders] = useState<GetOrdersResponseDto['orders']>([]);
 
   const handleDirectionChange = (id: string) => {
-    const targetDirection = defaultDirections.find((dir) => dir.id === id);
+    const targetDirection: IChip | undefined = defaultDirections.find((dir) => dir.id === id);
 
     if (!targetDirection) {
       throw new Error('Not found selected direction');
     }
 
     setDirection(targetDirection);
+    sortVisibleList(targetDirection);
+  }
+
+  const sortVisibleList = (direction: IChip) => {
+    const filteredList: GetOrdersResponseDto['orders'] = orders.filter((order) => {
+      if (direction.id === '1') {
+        return order.route.to === 'NVK'
+      } else {
+        return order.route.from === 'NVK';
+      }
+    });
+
+    setVisibleOrders(filteredList);
   }
 
   const getAllOrders = async () => {
     const orders = await getOrders(accessTokenGetter());
     setOrders(orders.orders);
+    sortVisibleList(direction);
   }
 
   useEffect(() => {
     getAllOrders()
-      .then(() => {
-        setVisibleOrders(orders.filter((order) => {
-          if (direction.id === '1') {
-            return order.route.to === 'NVK'
-          } else {
-            return order.route.from === 'NVK';
-          }
-        }))
-      })
   }, []);
 
   return (
     <div className={styles.mainDiv}>
       <ChipsComponent items={defaultDirections} onItemClick={handleDirectionChange} />
       <div style={{ marginTop: "25px" }}>
-        {visibleOrders.map((e, index) => (
+        {visibleOrders.map((order: GetOrdersResponseDto['orders'][number], index) => (
           <Link
-            to={"1"}
+            to={order.id}
             key={index}
             style={{ textDecoration: "none", color: "black" }}
           >
             <OneOrderComponent
-              route={"Кампус -> Розы Люксембург 49"}
-              departureTime="21:18"
-              price="100"
-              emptySeat={2}
+              route={`${formatRoutePipe(order.route.from)} -> ${formatRoutePipe(order.route.to)}`}
+              departureTimeShort={formatTimePipe(order.timeStart, true)}
+              price={'' + order.price}
+              emptySeat={order.leftCount}
             />
           </Link>
         ))}

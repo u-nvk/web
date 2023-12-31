@@ -2,13 +2,13 @@ import styles from "./styles/one-order.component.module.css";
 
 type RouteProps = {
   route: string;
-  departureTime: string;
+  departureTimeShort: string;
   price: string;
   emptySeat: number;
 };
 export const OneOrderComponent = ({
   route,
-  departureTime,
+  departureTimeShort,
   price,
   emptySeat,
 }: RouteProps) => {
@@ -26,7 +26,7 @@ export const OneOrderComponent = ({
               отправление
             </p>
             <p className={`${styles.orderInfoElementValue} mediumText`}>
-              {departureTime}
+              {departureTimeShort}
             </p>
           </div>
         </div>

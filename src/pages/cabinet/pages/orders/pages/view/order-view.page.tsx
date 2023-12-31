@@ -1,98 +1,108 @@
 import styles from "./styles/order-view.page.module.css";
 import vkIcon from '../../../../../../icons/VK.svg';
 import back from '../../../../../../icons/back.svg';
-import { useNavigate } from "react-router-dom";
+import {useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {getOrderApi, GetOrderResponseDto} from "../../../../../../api/get-order/get-order.api.ts";
+import {useAccessToken} from "../../../../../../hooks/utils/use-id-from-token.hook.ts";
+import {formatTimePipe} from "../../../../../../pipes/format-time.pipe.ts";
+import {formatDatePipe} from "../../../../../../pipes/format-date.pipe.ts";
+import {formatRoutePipe} from "../../../../../../pipes/format-route.pipe.ts";
 
-export const OrderViewPage = () => { 
-  const navigate = useNavigate()
-  const handleClick = () => navigate('../orders');
-  return <div className={styles.container}>
-<img className={styles.iconBack} src={back} width="7%" height="7%" alt='back-arrow' onClick={handleClick} />
-  <div className={styles.infoAndButtonView}>
-    <div className={styles.infoView}>
-      <div style={{marginLeft: -10, marginTop: 5, width: '100%', flex: 0.1}}>
-        <p className={styles.nameText}>Розы Люксембург 49 ➙ Кампус</p>
-      </div>
-
-      <div className={styles.priceStyle}>
-        <div style={{marginLeft: -10, marginTop: 20, flex: 0.33, alignItems: 'flex-start'}}>
-          <div style={{alignItems: 'center'}}>
-            <p className={styles.mainInfoLabel}>отправление</p>
-            <p className={styles.mainInfoValue}>21:18</p>
-          </div>
-        </div>
-
-        <div style={{marginTop: 20, marginLeft: 50, flex: 0.33, alignItems: 'center'}}>
-          <div style={{alignItems: 'center'}}>
-            <p className={styles.mainInfoLabel}>стоимость</p>
-            <p className={styles.mainInfoValue}>100₽</p>
-          </div>
-        </div>
-
-        <div style={{marginTop: 20, marginLeft: 50, flex: 0.33, alignItems: 'flex-end'}}>
-          <div style={{alignItems: 'center'}}>
-            <p className={styles.mainInfoLabel}>свободно</p>
-            <p className={styles.mainInfoValue}>2</p>
-          </div>
-        </div>
-      </div>
-      <div style={{marginLeft: -10, marginTop: 35, width: '100%', flex: 0.2}}>
-        <p className={styles.infoLabel}>
-          водитель
-        </p>
-        <div
-          style={{
-            flexDirection: 'row',
-            flexWrap: 'nowrap',
-            alignItems: 'center',
-          }}>
-          <p className={styles.iconVkText}>
-            Маркелов Артемий
-          </p>
-          <img src={vkIcon} alt="VK" />
-          {/* <div className={{marginLeft: '5%'}}>
-            <TouchableOpacity
-              onPress={() =>
-                Linking.openURL('https://vk.com/sankok2000two')
-              }>
-              <FirstIcon
-                name="vk-alternitive"
-                size={22}
-                color={'rgb(0,119,255)'}
-              />
-            </TouchableOpacity>
-          </div> */}
-        </div>
-      </div>
-      <div style={{marginLeft: -10, marginTop: 15, width: '100%', flex: 0.2}}>
-        <p className={styles.infoLabel}>
-          марка и модель
-        </p>
-        <p className={styles.infoValue}>
-          Mercedes S, а225ло
-        </p>
-      </div>
-      <div style={{marginLeft: -10, marginTop: 15, width: '100%', flex: 0.2}}>
-        <p className={styles.infoLabel}>
-          номер для перевода
-        </p>
-        <p className={styles.infoValue}>
-          +79122602002
-        </p>
-      </div>
-      <div style={{marginLeft: -10, marginTop: 15, width: '100%', flex: 0.2}}>
-        <p className={styles.infoLabel}>банк</p>
-        <p className={styles.infoValue}>
-          Сбербанк
-        </p>
-      </div>
-    </div>
-    <button className={styles.buttonJoin}>Присоединиться</button>
-
-    {/* <TouchableOpacity className={styles.buttonStyle}>
-      <p className={styles.buttonText}>Присоединиться</p>
-    </TouchableOpacity> */}
-  </div>
-</div>
+const redirectToVkById = (vkId: number): void => {
+  window.open(`https://vk.com/id${vkId}`, '__blank')
 }
 
+export const OrderViewPage = () => {
+  const params = useParams();
+  const [order, setOrder] = useState<GetOrderResponseDto | null>(null);
+  const [isLoading, setLoading] = useState<boolean>(true);
+
+  const accessTokenGetter = useAccessToken();
+
+  useEffect(() => {
+    getOrderApi(accessTokenGetter(), params.id as string)
+      .then((data) => {
+        setOrder(data);
+      })
+      .finally(() => {
+        setLoading(false);
+      })
+  }, []);
+
+  if (isLoading) {
+    return 'Loading...';
+  }
+
+  if (order) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.wrapperContent}>
+          <div className={styles.content}>
+            <div className={`${styles.contentRouteLine} ${styles.contentLine}`}>
+            <span className={`mediumText ${styles.text}`}>
+              {formatRoutePipe(order.route.from) + ' -> ' + formatRoutePipe(order.route.to)}
+            </span>
+            </div>
+            <div className={`${styles.contentMainInfoLine} ${styles.contentLine}`}>
+              <div>
+                <div className={`lightText ${styles.littleText}`}>
+                  отправление
+                </div>
+                <div className={`mediumText ${styles.infoText}`}>
+                  {formatTimePipe(order.timeStart, true)}
+                </div>
+              </div>
+              <div>
+                <div className={`lightText ${styles.littleText}`}>
+                  стоимость
+                </div>
+                <div className={`mediumText ${styles.infoText}`}>
+                  {order.price}
+                </div>
+              </div>
+              <div>
+                <div className={`lightText ${styles.littleText}`}>
+                  свободно
+                </div>
+                <div className={`mediumText ${styles.infoText}`}>
+                  ДОПИЛИТЬ
+                </div>
+              </div>
+            </div>
+            <div className={styles.contentLine}>
+              <div className={`lightText ${styles.littleText}`}>Дата</div>
+              <div className={`mediumText ${styles.infoText}`}>{formatDatePipe(order.timeStart)}</div>
+            </div>
+            <div className={`${styles.contentLine}`}>
+              <div className={`lightText ${styles.littleText}`}>водитель</div>
+              <div className={`mediumText ${styles.infoText}`}>
+                <span>{order.driver.firstname} {order.driver.surname} </span>
+                <img src={vkIcon} onClick={() => redirectToVkById(order?.driver.vkId)}/>
+              </div>
+            </div>
+            <div className={`${styles.contentLine}`}>
+              <div className={`lightText ${styles.littleText}`}>марка и модель</div>
+              <div className={`mediumText ${styles.infoText}`}>{order.transport.name}</div>
+            </div>
+            <div className={`${styles.contentLine}`}>
+              <div className={`lightText ${styles.littleText}`}>номер</div>
+              <div className={`mediumText ${styles.infoText}`}>{order.transport.plateNumber}</div>
+            </div>
+            <div className={`${styles.contentLine}`}>
+              <div className={`lightText ${styles.littleText}`}>банк</div>
+              <div className={`mediumText ${styles.infoText}`}>ДОПИЛИТЬ</div>
+            </div>
+          </div>
+        </div>
+        <div className={styles.wrapperBtn}>
+          <span className={`regularText ${styles.text}`}>
+            Присоединиться
+          </span>
+        </div>
+      </div>
+    )
+  }
+
+  return 'Error';
+}
