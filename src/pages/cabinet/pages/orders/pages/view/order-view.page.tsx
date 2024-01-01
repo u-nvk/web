@@ -102,8 +102,18 @@ export const OrderViewPage = () => {
   }
 
   useEffect(() => {
-    initComponentData();
-    setInterval(() => initComponentData(), 3000);
+    let interval: number | null = null;
+
+    initComponentData()
+      .then(() => {
+        interval = setInterval(() => initComponentData(), 3000);
+      })
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    }
   }, []);
 
   if (isLoading) {
