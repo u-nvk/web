@@ -4,7 +4,7 @@ import {
   ConnectEvents,
   VKSilentAuthPayload,
 } from "@vkontakte/superappkit";
-import { useContext, useEffect, useRef } from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { exchangeVkSilentTokenApi } from "../../api";
 import {
@@ -54,8 +54,6 @@ const registerVkAuth = (
         case ConnectEvents.OneTapAuthEventsSDK.FULL_AUTH_NEEDED: //  = 'VKSDKOneTapAuthFullAuthNeeded'
         case ConnectEvents.OneTapAuthEventsSDK.PHONE_VALIDATION_NEEDED: // = 'VKSDKOneTapAuthPhoneValidationNeeded'
         case ConnectEvents.ButtonOneTapAuthEventsSDK.SHOW_LOGIN: // = 'VKSDKButtonOneTapAuthShowLogin'
-          console.log("aslkdjasd");
-
           return Connect.redirectAuth({
             url: "https://urfu-nvk.ru/auth",
             state: "",
@@ -63,8 +61,6 @@ const registerVkAuth = (
         // state - состояние вашего приложение или любая произвольная строка, которая будет добавлена к url после авторизации.
         // Пользователь перешел по кнопке "Войти другим способом"
         case ConnectEvents.ButtonOneTapAuthEventsSDK.SHOW_LOGIN_OPTIONS: // = 'VKSDKButtonOneTapAuthShowLoginOptions'
-          console.log(21212);
-
           // Параметр screen: phone позволяет сразу открыть окно ввода телефона в VK ID
           // Параметр url: ссылка для перехода после авторизации. Должен иметь https схему. Обязательный параметр.
           return Connect.redirectAuth({
@@ -97,15 +93,43 @@ export const AuthPage = () => {
   const ref = useRef<HTMLDivElement>(null);
   const profileContext = useContext(ProfileDataContext);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!isValidProfileData(profileContext)) {
-      if (ref.current) {
-        registerVkAuth(ref.current, (accesstoken: string) => {
-          profileContext.setData?.({ accessToken: accesstoken });
+      const search = window.location.search;
+      const params = new URLSearchParams(search);
+      const payloadFromVk = params.get('payload');
 
-          navigate("/cabinet/orders");
-        });
+      // TODO: прибраться и обработать ошибки и json parse
+
+      if (payloadFromVk) {
+        setIsLoading(true);
+        const obj = JSON.parse(payloadFromVk);
+        if ('token' in obj && 'uuid' in obj && 'user' in obj && 'first_name' in obj.user && 'last_name' in obj.user) {
+          exchangeVkSilentTokenApi(
+            obj.token,
+            obj.uuid,
+            obj.user.first_name,
+            obj.user.last_name
+          ).then((result) => {
+            profileContext.setData?.({ accessToken: result.accessToken });
+
+            navigate("/cabinet/orders");
+          })
+            .finally(() => {
+              setIsLoading(false);
+            })
+        }
+      } else {
+        setIsLoading(false);
+        if (ref.current) {
+          registerVkAuth(ref.current, (accesstoken: string) => {
+            profileContext.setData?.({ accessToken: accesstoken });
+
+            navigate("/cabinet/orders");
+          });
+        }
       }
 
       return () => {
@@ -122,6 +146,7 @@ export const AuthPage = () => {
 
   return (
     <div className={styles.container}>
+      {isLoading && <div>Loading</div>}
       <div className={styles.vkBtn} ref={ref}></div>
     </div>
   );
