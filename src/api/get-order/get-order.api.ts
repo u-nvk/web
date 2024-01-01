@@ -15,6 +15,7 @@ export interface GetOrderResponseDto {
     firstname: string;
     surname: string;
     vkId: number;
+    pId: string;
   }[],
   transport: {
     plateNumber: string;
@@ -22,6 +23,7 @@ export interface GetOrderResponseDto {
     name: string;
   },
   timeStart: string;
+  leftCount: number;
 }
 
 export const getOrderApi = async (

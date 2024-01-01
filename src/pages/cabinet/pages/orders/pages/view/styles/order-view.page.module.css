@@ -34,18 +34,32 @@
 }
 
 .contentDateLine {
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .wrapperBtn {
   height: 5.4%;
-  background-color: #DCEDFF;
   width: 90.8%;
   border-radius: 8px;
-  border: #9FCAFF 1px solid;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: transparent 1px solid;
+}
+
+.wrapperBtnNotJoined {
+  background-color: #DCEDFF;
+  border: #9FCAFF 1px solid;
+}
+
+.wrapperBtnError {
+  background-color: #e8002c;
+}
+
+.wrapperBtnJoined {
+  background-color: #fff2a1;
 }
 
 .text {
