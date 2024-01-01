@@ -12,6 +12,15 @@
   border-radius: 10px;
   align-items: center;
   justify-content: center;
+  border: transparent 2px solid;
+}
+
+.borderGreen {
+  border: #A1FFC7 2px solid;
+}
+
+.borderYellow {
+  border: #E5E178 2px solid;
 }
 
 .directionContainer {

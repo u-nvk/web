@@ -5,15 +5,19 @@ type RouteProps = {
   departureTimeShort: string;
   price: string;
   emptySeat: number;
+  isUserJoin: boolean;
+  isUserDriver: boolean;
 };
 export const OneOrderComponent = ({
   route,
   departureTimeShort,
   price,
   emptySeat,
+  isUserDriver,
+  isUserJoin,
 }: RouteProps) => {
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${isUserJoin ? styles.borderGreen : ''} ${isUserDriver ? styles.borderYellow : ''}`}>
       <div className={styles.directionContainer}>
         <p className={`${styles.directionText} mediumText`}>{route}</p>
       </div>

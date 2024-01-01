@@ -21,6 +21,7 @@ const defaultDirections: IChip[] = [
 
 export const OrdersPage = () => {
   const accessTokenGetter = useAccessToken();
+  const userPidGetter = useIdFromToken();
   const [direction, setDirection] = useState<IChip>(defaultDirections[0]);
   const [orders, setOrders] = useState<GetOrdersResponseDto['orders']>([]);
   const [visibleOrders, setVisibleOrders] = useState<GetOrdersResponseDto['orders']>([]);
@@ -54,6 +55,12 @@ export const OrdersPage = () => {
     sortVisibleList(direction);
   }
 
+  const isUserJoin = (participantIds: string[]) => {
+    return participantIds.includes(userPidGetter());
+  }
+
+  const isUserDriver = (driverPid: string) => driverPid === userPidGetter();
+
   useEffect(() => {
     getAllOrders()
   }, []);
@@ -73,6 +80,8 @@ export const OrdersPage = () => {
               departureTimeShort={formatTimePipe(order.timeStart, true)}
               price={'' + order.price}
               emptySeat={order.leftCount}
+              isUserJoin={isUserJoin(order.participantIds)}
+              isUserDriver={isUserDriver(order.driverPid)}
             />
           </Link>
         ))}
