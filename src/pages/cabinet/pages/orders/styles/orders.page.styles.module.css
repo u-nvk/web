@@ -12,6 +12,15 @@
   height: 3%;
 }
 
+.group {
+  margin-bottom: 21px;
+}
+
+.dateHeading {
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
 .oneButton {
   border-style: none;
   width: 48%;

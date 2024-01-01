@@ -7,6 +7,7 @@ import {getOrders, GetOrdersResponseDto} from "../../../../api";
 import {useAccessToken, useIdFromToken} from "../../../../hooks/utils/use-id-from-token.hook.ts";
 import {formatTimePipe} from "../../../../pipes/format-time.pipe.ts";
 import {formatRoutePipe} from "../../../../pipes/format-route.pipe.ts";
+import {formatDateMonthTextPipe, formatDatePipe} from "../../../../pipes/format-date.pipe.ts";
 
 const defaultDirections: IChip[] = [
   {
@@ -24,7 +25,7 @@ export const OrdersPage = () => {
   const userPidGetter = useIdFromToken();
   const [direction, setDirection] = useState<IChip>(defaultDirections[0]);
   const [orders, setOrders] = useState<GetOrdersResponseDto['orders']>([]);
-  const [visibleOrders, setVisibleOrders] = useState<GetOrdersResponseDto['orders']>([]);
+  const [visibleOrders, setVisibleOrders] = useState<Map<string, GetOrdersResponseDto['orders']>>(new Map())
 
   const handleDirectionChange = (id: string) => {
     const targetDirection: IChip | undefined = defaultDirections.find((dir) => dir.id === id);
@@ -46,7 +47,18 @@ export const OrdersPage = () => {
       }
     });
 
-    setVisibleOrders(filteredList);
+    const resultMap: Map<string, GetOrdersResponseDto['orders']> = new Map();
+
+    filteredList.forEach((item) => {
+      const formattedDate: string = formatDatePipe(item.timeStart);
+      if (resultMap.has(formattedDate)) {
+        resultMap.set(formattedDate, [...resultMap.get(formattedDate) as GetOrdersResponseDto['orders'], item]);
+      } else {
+        resultMap.set(formattedDate, [item]);
+      }
+    });
+
+    setVisibleOrders(resultMap);
   }
 
   const getAllOrders = async () => {
@@ -62,29 +74,42 @@ export const OrdersPage = () => {
   const isUserDriver = (driverPid: string) => driverPid === userPidGetter();
 
   useEffect(() => {
-    getAllOrders()
+    getAllOrders();
   }, []);
 
   return (
     <div className={styles.mainDiv}>
       <ChipsComponent items={defaultDirections} onItemClick={handleDirectionChange} />
       <div style={{ marginTop: "25px" }}>
-        {visibleOrders.map((order: GetOrdersResponseDto['orders'][number], index) => (
-          <Link
-            to={order.id}
-            key={index}
-            style={{ textDecoration: "none", color: "black" }}
-          >
-            <OneOrderComponent
-              route={`${formatRoutePipe(order.route.from)} -> ${formatRoutePipe(order.route.to)}`}
-              departureTimeShort={formatTimePipe(order.timeStart, true)}
-              price={'' + order.price}
-              emptySeat={order.leftCount}
-              isUserJoin={isUserJoin(order.participantIds)}
-              isUserDriver={isUserDriver(order.driverPid)}
-            />
-          </Link>
-        ))}
+        {Array.from(visibleOrders.values()).map((group, externalIndex) => {
+          return (
+            <div className={styles.group} key={externalIndex}>
+              <div className={`boldText ${styles.dateHeading}`}>
+                {formatDateMonthTextPipe(group[0].timeStart)}
+              </div>
+              {
+                group.map((order: GetOrdersResponseDto['orders'][number], innerIndex) => {
+                  return (
+                    <Link
+                      key={`${externalIndex}-${innerIndex}`}
+                      to={order.id}
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      <OneOrderComponent
+                        route={`${formatRoutePipe(order.route.from)} -> ${formatRoutePipe(order.route.to)}`}
+                        departureTimeShort={formatTimePipe(order.timeStart, true)}
+                        price={'' + order.price}
+                        emptySeat={order.leftCount}
+                        isUserJoin={isUserJoin(order.participantIds)}
+                        isUserDriver={isUserDriver(order.driverPid)}
+                      />
+                    </Link>
+                  )
+                })
+              }
+            </div>
+          )
+        })}
       </div>
     </div>
   );

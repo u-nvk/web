@@ -107,11 +107,9 @@ export const OrderViewPage = () => {
     initComponentData()
       .then(() => {
         interval = setInterval(() => initComponentData(), 3000);
-        console.log('IN', interval);
       })
 
     return () => {
-      console.log('OUT', interval)
       if (typeof interval === 'number') {
         clearInterval(interval);
       }
