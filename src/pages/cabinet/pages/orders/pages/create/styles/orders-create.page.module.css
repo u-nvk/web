@@ -1,0 +1,69 @@
+.mainDiv {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 5%;
+}
+
+.propertyDiv {
+  margin-top: 15px;
+  width: 100%;
+}
+
+.controlDiv {
+  margin-top: 8px;
+  width: 100%;
+}
+
+.inputContainer {
+  position: relative;
+  width: 100%;
+}
+
+.rubleInput {
+  width: 100%;
+  padding: 8px;
+  background-color: #fff;
+  border: 2px solid #fff;
+  border-radius: 8px;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box; /* Firefox, other Gecko */
+  box-sizing: border-box; /* Opera/IE 8+ */
+}
+
+.rubleInput:focus {
+  border: 2px solid #9fcaff !important; /* переопределяем цвет границы при фокусе */
+  outline: none; /* убираем стандартное маркерное обозначение при фокусе */
+}
+
+.rubleSymbol {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  font-size: 20px;
+}
+
+.wrapperBtn {
+  height: 7%;
+  width: 100%;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: transparent 1px solid;
+  background-color: #dcedff;
+  border: #9fcaff 1px solid;
+}
+
+.text {
+  color: var(--text-color);
+  font-size: 14px;
+}
+
+.infoAndButtonDiv {
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
