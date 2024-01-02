@@ -67,3 +67,7 @@
   flex-direction: column;
   justify-content: space-between;
 }
+
+.text {
+  font-size: 14px;
+}
