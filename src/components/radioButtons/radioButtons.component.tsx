@@ -1,50 +1,55 @@
 import styles from "./radioButtons.component.styles.module.css";
+import {useState} from "react";
 
 type ValueType = {
-  value: number;
-  checkedValue: number | null;
-  onChange: (value: number) => void;
+  value: string;
+  onChange: (value: string) => void;
+  isActive: boolean,
 };
-const RadioButton = ({ value, checkedValue, onChange }: ValueType) => (
-  <label
-    className={
-      value === checkedValue
-        ? `${styles.labelStyle} ${styles.activeLabelStyle} regularText`
-        : `${styles.labelStyle} regularText`
-    }
+const RadioButton = ({ value, onChange, isActive }: ValueType) => (
+  <div
+    className={`${styles.labelStyle} ${isActive ? styles.activeLabelStyle : ''} regularText`}
     onClick={() => onChange(value)}
   >
-    {value}
+    <div>{value}</div>
     <input
       type="radio"
       value={value}
-      checked={value === checkedValue}
+      checked={isActive}
       onChange={() => onChange(value)}
       style={{
         display: "none",
       }}
     />
-  </label>
+  </div>
 );
 
+export type RadioButtonOption = {
+  value: string;
+  name: string;
+}
+
 type IProps = {
-  selectedValue: number;
-  setSelectedValue: React.Dispatch<React.SetStateAction<number>>;
+  options: RadioButtonOption[],
+  setValue: (selectedOption: RadioButtonOption) => void,
 };
 
-const RadioButtons = ({ selectedValue, setSelectedValue }: IProps) => {
-  const handleRadioChange = (value: number) => {
-    setSelectedValue(value);
+const RadioButtons = ({ options, setValue }: IProps) => {
+  const [currValue, setCurrValue] = useState(options[0]);
+
+  const handleRadioChange = (value: RadioButtonOption) => {
+    setCurrValue(value);
+    setValue(value);
   };
 
   return (
     <div>
-      {[1, 2, 3, 4, 5, 6].map((value) => (
+      {options.map((value) => (
         <RadioButton
-          key={value}
-          value={value}
-          checkedValue={selectedValue}
-          onChange={handleRadioChange}
+          key={value.value}
+          value={value.name}
+          isActive={currValue.value === value.value}
+          onChange={() => handleRadioChange(value)}
         />
       ))}
     </div>

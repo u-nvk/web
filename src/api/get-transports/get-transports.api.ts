@@ -1,5 +1,6 @@
 export interface GetTransportsResponseDto {
   transports: {
+    id: string;
     name: string;
     plateNumber: string;
     color: string;
