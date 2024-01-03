@@ -11,9 +11,9 @@ import {
   ProfileDataContext,
 } from "../../context/profile-data.context";
 import styles from "./styles/cabinet.layout.styles.module.css";
-import HistoryIcon from "../../icons/history.svg";
-import OrdersIcon from "../../icons/orders.svg";
-import ProfileIcon from "../../icons/profile.svg";
+import HistoryIcon from "/history.svg?url";
+import OrdersIcon from "/orders.svg?url";
+import ProfileIcon from "/profile.svg?url";
 
 export const CabinetLayout = () => {
   const location = useLocation();
@@ -39,15 +39,15 @@ export const CabinetLayout = () => {
       <div className={styles.bar}>
         <Link to={"history"} className={styles.barElement}>
           <img src={HistoryIcon} alt="История" />
-          <p className={styles.iconText}>История</p>
+          <p className={`${styles.iconText} regularText`}>История</p>
         </Link>
         <Link to={"orders"} className={styles.barElement}>
           <img src={OrdersIcon} alt="Поездки" />
-          <p className={styles.iconText}>Поездки</p>
+          <p className={`${styles.iconText} regularText`}>Поездки</p>
         </Link>
         <Link to={"profile"} className={styles.barElement}>
           <img src={ProfileIcon} alt="Профиль" />
-          <p className={styles.iconText}>Профиль</p>
+          <p className={`${styles.iconText} regularText`}>Профиль</p>
         </Link>
       </div>
     </div>

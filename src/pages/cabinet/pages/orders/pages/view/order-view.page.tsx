@@ -1,5 +1,5 @@
 import styles from "./styles/order-view.page.module.css";
-import vkIcon from '../../../../../../icons/VK.svg';
+import vkIcon from "/VK.svg?url";
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {getOrderApi, GetOrderResponseDto} from "../../../../../../api/get-order/get-order.api.ts";
@@ -11,6 +11,8 @@ import {joinToOrderApi} from "../../../../../../api";
 import {getProfileData} from "../../../../../../api/get-profile-data/get-profile-data.api.ts";
 import {translateBankPipe} from "../../../../../../pipes/translate-bank.pipe.ts";
 import {unjoinToOrderApi} from "../../../../../../api/unjoin-to-order/unjoin-to-order.api.ts";
+import {LoaderComponent} from "../../../../../../components/loader/loader.component.tsx";
+import {ErrorBannerComponent} from "../../../../../../components/error-banner/error-banner.component.tsx";
 
 const redirectToVkById = (vkId: number): void => {
   window.open(`https://vk.com/id${vkId}`, '__blank')
@@ -117,11 +119,15 @@ export const OrderViewPage = () => {
   }, []);
 
   if (isLoading) {
-    return 'Loading...';
+    return <div className={styles.loader}>
+      <LoaderComponent showAfterMS={1000} />
+    </div>;
   }
 
   if (isErrorInRequests) {
-    return 'Произошла ошибка';
+    return <div className={styles.errorBanner}>
+      <ErrorBannerComponent />
+    </div>;
   }
 
   if (order && typeof paymentBank === 'number') {

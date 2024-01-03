@@ -133,35 +133,35 @@ table {
 @font-face {
   font-family: "InterBold";
   src: local("InterBold"),
-    url("./fonts/Inter/Inter-Bold.ttf") format("truetype");
+    url("/fonts/Inter/Inter-Bold.ttf") format("truetype");
   font-weight: bold;
 }
 
 @font-face {
   font-family: "InterLight";
   src: local("InterLight"),
-    url("./fonts/Inter/Inter-Light.ttf") format("truetype");
+    url("/fonts/Inter/Inter-Light.ttf") format("truetype");
   font-weight: light;
 }
 
 @font-face {
   font-family: "InterMedium";
   src: local("InterMedium"),
-    url("./fonts/Inter/Inter-Medium.ttf") format("truetype");
+    url("/fonts/Inter/Inter-Medium.ttf") format("truetype");
   font-weight: medium;
 }
 
 @font-face {
   font-family: "InterRegular";
   src: local("InterRegular"),
-    url("./fonts/Inter/Inter-Regular.ttf") format("truetype");
+    url("/fonts/Inter/Inter-Regular.ttf") format("truetype");
   font-weight: normal;
 }
 
 @font-face {
   font-family: "InterSemiBold";
   src: local("InterSemiBold"),
-    url("./fonts/Inter/Inter-SemiBold.ttf") format("truetype");
+    url("/fonts/Inter/Inter-SemiBold.ttf") format("truetype");
   font-weight: bolder;
 }
 
