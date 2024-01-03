@@ -12,6 +12,8 @@ import {
 } from "../../../../../../api/get-transports/get-transports.api";
 import {createOrderApi} from "../../../../../../api/create-order/create-order.api.ts";
 import {useNavigate} from "react-router-dom";
+import {LoaderComponent} from "../../../../../../components/loader/loader.component.tsx";
+import {ErrorBannerComponent} from "../../../../../../components/error-banner/error-banner.component.tsx";
 
 type IPlace = {
   value: string;
@@ -46,6 +48,13 @@ const defaultPlaces: IPlace[] = [
   // { value: "4", label: "Вторчермет" },
   // { value: "5", label: "Ботаника" },
 ];
+
+const customStyles = {
+  control: (provided: any) => ({
+    ...provided,
+    borderRadius: "10px",
+  }),
+};
 
 export const OrdersCreatePage = () => {
 
@@ -82,13 +91,6 @@ export const OrdersCreatePage = () => {
     if (event.target.value.length == 0) {
       setPrice(null);
     }
-  };
-
-  const customStyles = {
-    control: (provided: any) => ({
-      ...provided,
-      borderRadius: "10px",
-    }),
   };
 
   const saveOrder = () => {
@@ -136,19 +138,19 @@ export const OrdersCreatePage = () => {
   }, []);
 
   if (isLoading) {
-    return 'Loading';
+    return <div className={styles.loaderWrapper}><LoaderComponent showAfterMS={1000} /></div>
   }
 
   if (isError) {
-    return 'Error';
+    return <div className={styles.loaderWrapper}><ErrorBannerComponent /></div>;
   }
 
   if (isCreating) {
-    return 'Создание';
+    return <div className={styles.loaderWrapper}><LoaderComponent showAfterMS={1000} /></div>
   }
 
   if (isErrorAfterCreating) {
-    return 'After Creating error';
+    return <div className={styles.loaderWrapper}><ErrorBannerComponent /></div>;
   }
 
   return (

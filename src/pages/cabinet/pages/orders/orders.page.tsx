@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { OneOrderComponent } from "./components/one-order/one-order.component";
 import styles from "./styles/orders.page.styles.module.css";
 import {useEffect, useState} from "react";
@@ -8,6 +8,8 @@ import {useAccessToken, useIdFromToken} from "../../../../hooks/utils/use-id-fro
 import {formatTimePipe} from "../../../../pipes/format-time.pipe.ts";
 import {formatRoutePipe} from "../../../../pipes/format-route.pipe.ts";
 import {formatDateMonthTextPipe, formatDatePipe} from "../../../../pipes/format-date.pipe.ts";
+import {getOwnProfileDataApi} from "../../../../api/get-own-profile-data/get-own-profile-data.api.ts";
+import {ButtonComponent} from "../../../../components/button/button.component.tsx";
 
 const defaultDirections: IChip[] = [
   {
@@ -23,9 +25,11 @@ const defaultDirections: IChip[] = [
 export const OrdersPage = () => {
   const accessTokenGetter = useAccessToken();
   const userPidGetter = useIdFromToken();
+  const navigate = useNavigate();
   const [direction, setDirection] = useState<IChip>(defaultDirections[0]);
   const [orders, setOrders] = useState<GetOrdersResponseDto['orders']>([]);
   const [visibleOrders, setVisibleOrders] = useState<Map<string, GetOrdersResponseDto['orders']>>(new Map())
+  const [isDriver, setIsDriver] = useState(false);
 
   const handleDirectionChange = (id: string) => {
     const targetDirection: IChip | undefined = defaultDirections.find((dir) => dir.id === id);
@@ -73,13 +77,20 @@ export const OrdersPage = () => {
 
   const isUserDriver = (driverPid: string) => driverPid === userPidGetter();
 
+  const navigateToCreateOrder = () => {
+    navigate('/cabinet/orders/create');
+  }
+
   useEffect(() => {
     getAllOrders();
+    getOwnProfileDataApi(accessTokenGetter())
+      .then((res) => setIsDriver(res.isDriver))
   }, []);
 
   return (
     <div className={styles.mainDiv}>
       <ChipsComponent items={defaultDirections} onItemClick={handleDirectionChange} />
+      {isDriver && <div className={`${styles.createOrderBtn}`}><ButtonComponent title={'Добавить'} onClick={navigateToCreateOrder} /></div>}
       <div style={{ marginTop: "25px" }}>
         {Array.from(visibleOrders.values()).map((group, externalIndex) => {
           return (

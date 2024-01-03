@@ -20,11 +20,11 @@
   height: 40px;
 }
 
-.driverDiv {
-  margin-top: 15%;
-}
-
 .text {
   font-size: 14px;
   margin-bottom: 6px;
+}
+
+.nextH {
+  margin-top: 40px;
 }

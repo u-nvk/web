@@ -6,6 +6,7 @@ import { OrdersCreatePage } from "./pages/cabinet/pages/orders/pages/create/orde
 import { OrderViewPage } from "./pages/cabinet/pages/orders/pages/view/order-view.page";
 import { ProfilePage } from "./pages/cabinet/pages/profile/profile.page";
 import { HistoryPage } from "./pages/cabinet/pages/history/history.page";
+import {DriverPage} from "./pages/cabinet/pages/profile/pages/driver/driver.page";
 
 export const routes = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ export const routes = createBrowserRouter([
       {
         path: "profile",
         element: <ProfilePage />,
+      },
+      {
+        path: "profile/driver",
+        element: <DriverPage />,
       },
       {
         path: "orders",

@@ -14,6 +14,7 @@ export const LoaderComponent: FC<LoaderComponentProps> = ({ showAfterMS }) => {
       const index = setTimeout(() => setIsShow(true), showAfterMS)
       return () => clearTimeout(index)
     }
+    setIsShow(true)
   }, []);
 
   return (

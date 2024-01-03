@@ -5,6 +5,13 @@
   padding: 5%;
 }
 
+.loaderWrapper {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .propertyDiv {
   margin-top: 15px;
   width: 100%;

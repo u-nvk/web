@@ -5,6 +5,11 @@
   padding: 5%;
 }
 
+.createOrderBtn {
+  height: 10%;
+  max-height: 41px;
+}
+
 .buttonGroup {
   display: flex;
   flex-direction: row;
