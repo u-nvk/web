@@ -10,10 +10,12 @@ import { useAccessToken } from "../../../../../../hooks/utils/use-id-from-token.
 import {
   getTransports,
 } from "../../../../../../api/get-transports/get-transports.api";
-import {createOrderApi} from "../../../../../../api/create-order/create-order.api.ts";
+import {createOrderApi, PostCreateOrderRequestDto} from "../../../../../../api/create-order/create-order.api.ts";
 import {useNavigate} from "react-router-dom";
 import {LoaderComponent} from "../../../../../../components/loader/loader.component.tsx";
 import {ErrorBannerComponent} from "../../../../../../components/error-banner/error-banner.component.tsx";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 type IPlace = {
   value: string;
@@ -68,10 +70,10 @@ export const OrdersCreatePage = () => {
   const [selectedTransport, setSelectedTransport] = useState<ITransport | null>();
   const startFreeSeatCountOptions: RadioButtonOption[] = new Array(6).fill(0).map((_, idx) => ({ value: `${idx + 1}`, name: `${idx + 1}` }))
   const [startFreeSeatCount, setStartFreeSeatCount] = useState<number>(parseInt(startFreeSeatCountOptions[0].value));
+  const [startDate, setStartDate] = useState(new Date());
 
   const [isLoading, setLoading] = useState(true);
   const [isError, setError] = useState(false);
-  const [isCreating, setIsCreating] = useState(false);
   const [isErrorAfterCreating, setErrorAfterCreating] = useState(false);
 
   const handleDirectionChange = (id: string) => {
@@ -94,11 +96,11 @@ export const OrdersCreatePage = () => {
   };
 
   const saveOrder = () => {
-    if (price === null) {
+    if (price === null || !selectedTransport?.value || !secondDirection?.value) {
       throw new Error();
     }
 
-    const requestData: any = {
+    const requestData: PostCreateOrderRequestDto = {
       route: {
         from: direction.id === fromNvkId ? 'NVK' : secondDirection?.value,
         to: direction.id === toNvkId ? 'NVK' : secondDirection?.value
@@ -106,15 +108,16 @@ export const OrdersCreatePage = () => {
       price: price,
       transportId: selectedTransport?.value,
       startFreeSeatCount: startFreeSeatCount,
+      timeStart: startDate.toISOString(),
     }
 
-    setIsCreating(true);
+    setLoading(true);
     createOrderApi(accessTokenGetter(), requestData)
       .then((res) => {
         navigate('/cabinets/order/' + res.id);
       })
       .catch(() => setErrorAfterCreating(true))
-      .finally(() => setIsCreating(false))
+      .finally(() => setLoading(false))
   }
 
   const getAllTransports = async () => {
@@ -143,10 +146,6 @@ export const OrdersCreatePage = () => {
 
   if (isError) {
     return <div className={styles.loaderWrapper}><ErrorBannerComponent /></div>;
-  }
-
-  if (isCreating) {
-    return <div className={styles.loaderWrapper}><LoaderComponent showAfterMS={1000} /></div>
   }
 
   if (isErrorAfterCreating) {
@@ -218,6 +217,21 @@ export const OrdersCreatePage = () => {
               </div>
             </div>
           </div>
+          <div className={styles.propertyDiv}>
+            <span className={`regularText ${styles.text}`}>Дата</span>
+            <div className={styles.controlDiv}>
+              <div className={styles.inputContainer}>
+                <DatePicker
+                  selected={startDate}
+                  onChange={(date) => setStartDate(date)}
+                  showTimeSelect
+                  dateFormat="Pp"
+                  timeIntervals={10}
+                />
+              </div>
+            </div>
+          </div>
+
         </div>
         <div className={styles.wrapperBtn}>
           <span onClick={saveOrder} className={`regularText ${styles.text}`}>Опубликовать</span>

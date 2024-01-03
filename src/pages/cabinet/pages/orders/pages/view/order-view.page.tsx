@@ -30,6 +30,7 @@ export const OrderViewPage = () => {
   const [paymentBank, setPaymentBank] = useState<number | null>(null);
   const [isCanJoin, setCanJoin] = useState<boolean>(true);
   const [isTryJoinProcess, setTryJoinProcess] = useState<boolean>(false);
+  const [isOrderDriver, setIsOrderDriver] = useState(false);
 
   const joinToOrder = async () => {
     if (!order) {
@@ -77,6 +78,8 @@ export const OrderViewPage = () => {
 
         if (data.participants.some((part) => part.pId === userPid)) {
           setIsJoined(true);
+        } else if (data.driverPid === userPid) {
+          setIsOrderDriver(true);
         } else {
           setIsJoined(false);
           if (data.leftCount < 1) {
@@ -192,25 +195,26 @@ export const OrderViewPage = () => {
           </div>
         </div>
         <div
-          className={`${styles.wrapperBtn} ${!isJoined && !isErrorWhenTryJoin ? styles.wrapperBtnNotJoined : ''} ${isJoined ? styles.wrapperBtnJoined : ''} ${isErrorWhenTryJoin ? styles.wrapperBtnError : ''}`}
+          className={`${styles.wrapperBtn} ${!isJoined && !isErrorWhenTryJoin && !isOrderDriver ? styles.wrapperBtnNotJoined : ''} ${isJoined || isOrderDriver ? styles.wrapperBtnJoined : ''} ${isErrorWhenTryJoin && !isOrderDriver ? styles.wrapperBtnError : ''}`}
           onClick={joinToOrder}
         >
-          {!isErrorWhenTryJoin && !isJoined && isCanJoin &&
+          {!isErrorWhenTryJoin && !isJoined && isCanJoin && !isOrderDriver &&
             <span className={`regularText ${styles.text}`}>
               Присоединиться
             </span>
           }
           {isErrorWhenTryJoin && <span className={`regularText ${styles.text}`}>Произошла ошибка</span>}
-          {!isErrorWhenTryJoin && isJoined &&
+          {!isErrorWhenTryJoin && isJoined && !isOrderDriver &&
             <span className={`regularText ${styles.text}`}>
               Отписаться
             </span>
           }
-          {!isCanJoin && !isErrorWhenTryJoin &&
+          {!isCanJoin && !isErrorWhenTryJoin && !isOrderDriver &&
             <span className={`regularText ${styles.text}`}>
               Не осталось свободных мест
             </span>
           }
+          {isOrderDriver && <span className={`regularText ${styles.text}`}>Вы водитель</span>}
         </div>
       </div>
     )
