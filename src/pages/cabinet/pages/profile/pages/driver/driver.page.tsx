@@ -5,7 +5,6 @@ import {useAccessToken} from "../../../../../../hooks/utils/use-id-from-token.ho
 import {useEffect, useState} from "react";
 import {
   getOwnProfileDataApi,
-  GetProfileDataResponseDto
 } from "../../../../../../api/get-own-profile-data/get-own-profile-data.api.ts";
 import {getTransports, GetTransportsResponseDto} from "../../../../../../api/get-transports/get-transports.api.ts";
 import {LoaderComponent} from "../../../../../../components/loader/loader.component.tsx";

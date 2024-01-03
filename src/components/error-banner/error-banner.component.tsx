@@ -1,3 +1,4 @@
+// @ts-ignore
 import error from "/error.svg?Url"
 import styles from "./error-banner.component.styles.module.css";
 

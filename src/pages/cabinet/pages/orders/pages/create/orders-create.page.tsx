@@ -14,6 +14,7 @@ import {createOrderApi, PostCreateOrderRequestDto} from "../../../../../../api/c
 import {useNavigate} from "react-router-dom";
 import {LoaderComponent} from "../../../../../../components/loader/loader.component.tsx";
 import {ErrorBannerComponent} from "../../../../../../components/error-banner/error-banner.component.tsx";
+// @ts-ignore
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -223,7 +224,7 @@ export const OrdersCreatePage = () => {
               <div className={styles.inputContainer}>
                 <DatePicker
                   selected={startDate}
-                  onChange={(date) => setStartDate(date)}
+                  onChange={(date: Date) => setStartDate(date)}
                   showTimeSelect
                   dateFormat="Pp"
                   timeIntervals={10}

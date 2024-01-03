@@ -11,9 +11,9 @@ import {
   ProfileDataContext,
 } from "../../context/profile-data.context";
 import styles from "./styles/cabinet.layout.styles.module.css";
-import HistoryIcon from "/history.svg?url";
-import OrdersIcon from "/orders.svg?url";
-import ProfileIcon from "/profile.svg?url";
+import HistoryIcon from "/history-icon.svg?url";
+import OrdersIcon from "/orders-icon.svg?url";
+import ProfileIcon from "/profile-icon.svg?url";
 
 export const CabinetLayout = () => {
   const location = useLocation();

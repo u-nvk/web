@@ -39,10 +39,10 @@ export const OrdersPage = () => {
     }
 
     setDirection(targetDirection);
-    sortVisibleList(targetDirection);
+    sortVisibleList(targetDirection, orders);
   }
 
-  const sortVisibleList = (direction: IChip) => {
+  const sortVisibleList = (direction: IChip, orders: GetOrdersResponseDto['orders']) => {
     const filteredList: GetOrdersResponseDto['orders'] = orders.filter((order) => {
       if (direction.id === '1') {
         return order.route.to === 'NVK'
@@ -68,7 +68,7 @@ export const OrdersPage = () => {
   const getAllOrders = async () => {
     const orders = await getOrders(accessTokenGetter());
     setOrders(orders.orders);
-    sortVisibleList(direction);
+    sortVisibleList(direction, orders.orders);
   }
 
   const isUserJoin = (participantIds: string[]) => {

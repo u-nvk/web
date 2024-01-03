@@ -123,7 +123,7 @@ export const OrderViewPage = () => {
 
   if (isLoading) {
     return <div className={styles.loader}>
-      <LoaderComponent showAfterMS={1000} />
+      <LoaderComponent showAfterMS={1200} />
     </div>;
   }
 

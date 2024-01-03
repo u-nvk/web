@@ -5,7 +5,7 @@ export interface LoaderComponentProps {
   showAfterMS?: number;
 }
 
-export const LoaderComponent: FC<LoaderComponentProps> = ({ showAfterMS }) => {
+export const LoaderComponent: FC<LoaderComponentProps> = ({ showAfterMS = 1200 }) => {
   const [isShow, setIsShow] = useState(false);
 
   useEffect(() => {
