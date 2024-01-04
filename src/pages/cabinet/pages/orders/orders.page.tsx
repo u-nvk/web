@@ -90,7 +90,7 @@ export const OrdersPage = () => {
   return (
     <div className={styles.mainDiv}>
       <ChipsComponent items={defaultDirections} onItemClick={handleDirectionChange} />
-      {isDriver && <div className={`${styles.createOrderBtn}`}><ButtonComponent title={'Добавить'} onClick={navigateToCreateOrder} /></div>}
+      {isDriver && <div className={`${styles.createOrderBtn}`} style={{ marginTop: "15px" }}><ButtonComponent title={'Добавить'} onClick={navigateToCreateOrder} /></div>}
       <div style={{ marginTop: "25px" }}>
         {Array.from(visibleOrders.values()).map((group, externalIndex) => {
           return (
