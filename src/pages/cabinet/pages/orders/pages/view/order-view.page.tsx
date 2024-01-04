@@ -37,7 +37,7 @@ export const OrderViewPage = () => {
       throw new Error('Not order');
     }
 
-    if (isErrorWhenTryJoin || !isCanJoin) {
+    if (isErrorWhenTryJoin || !isCanJoin || isOrderDriver) {
       return;
     }
 
