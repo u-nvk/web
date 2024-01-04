@@ -1,5 +1,5 @@
 import styles from "./styles/order-view.page.module.css";
-import vkIcon from "/VK.svg?url";
+import vkIcon from "/icons/VK.svg?url";
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {getOrderApi, GetOrderResponseDto} from "../../../../../../api/get-order/get-order.api.ts";
@@ -177,7 +177,7 @@ export const OrderViewPage = () => {
               <div className={`lightText ${styles.littleText}`}>водитель</div>
               <div className={`mediumText ${styles.infoText}`}>
                 <span>{order.driver.firstname} {order.driver.surname} </span>
-                <img src={vkIcon} onClick={() => redirectToVkById(order?.driver.vkId)}/>
+                <img src={vkIcon} alt='VK' onClick={() => redirectToVkById(order?.driver.vkId)}/>
               </div>
             </div>
             <div className={`${styles.contentLine}`}>
