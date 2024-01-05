@@ -1,6 +1,7 @@
 import styles from "./styles/order-view.page.module.css";
 import vkIcon from "/icons/VK.svg?url";
-import { useParams } from "react-router-dom";
+import backArrow from "/icons/back.svg?url";
+import {useNavigate, useParams} from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   getOrderApi,
@@ -28,6 +29,7 @@ export const OrderViewPage = () => {
   const params = useParams();
   const accessTokenGetter = useAccessToken();
   const userPidGetter = useIdFromToken();
+  const navigate = useNavigate();
   const [order, setOrder] = useState<GetOrderResponseDto | null>(null);
   const [isLoading, setLoading] = useState<boolean>(true);
   const [isErrorInRequests, setErrorInRequests] = useState(false);
@@ -116,6 +118,14 @@ export const OrderViewPage = () => {
       });
   };
 
+  const handleBackButtonClick = () => {
+    if (history.length > 2) {
+      history.back();
+    } else {
+      navigate("/cabinet/orders")
+    }
+  };
+
   useEffect(() => {
     let interval: number | null = null;
 
@@ -149,6 +159,9 @@ export const OrderViewPage = () => {
   if (order && typeof paymentBank === "number") {
     return (
       <div className={styles.container}>
+        <div className={styles.wrapperBackArrow}>
+          <img src={backArrow} className={styles.backArrow} onClick={handleBackButtonClick} alt={'Назад'} />
+        </div>
         <div className={styles.wrapperAndParticipantsContent}>
           <div className={styles.wrapperContent}>
             <div className={styles.content}>
@@ -230,29 +243,29 @@ export const OrderViewPage = () => {
               </div>
             </div>
           </div>
-          {participants.length > 0 && (
-            <div className={styles.participantsDiv}>
-              <p className={`mediumText ${styles.participantsText}`}>
-                Попутчики:
-              </p>
-              {participants.map((e, index: number) => (
-                <div
-                  key={index}
-                  className={`lightText ${styles.participantsText}`}
-                >
+        </div>
+        {participants.length > 0 && (
+          <div className={styles.participantsDiv}>
+            <p className={`mediumText ${styles.participantsText}`}>
+              Попутчики:
+            </p>
+            {[...participants, ...participants, ...participants, ...participants, ...participants, ...participants, ...participants, ...participants].map((e, index: number) => (
+              <div
+                key={index}
+                className={`lightText ${styles.participantsText}`}
+              >
                   <span style={{ marginRight: '7px' }}>
                     {e.firstname} {e.surname}
                   </span>
-                  <img
-                    src={vkIcon}
-                    alt="VK"
-                    onClick={() => redirectToVkById(e.vkId)}
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+                <img
+                  src={vkIcon}
+                  alt="VK"
+                  onClick={() => redirectToVkById(e.vkId)}
+                />
+              </div>
+            ))}
+          </div>
+        )}
         <div
           className={`${styles.wrapperBtn} ${
             !isJoined && !isErrorWhenTryJoin && !isOrderDriver
