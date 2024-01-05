@@ -249,7 +249,7 @@ export const OrderViewPage = () => {
             <p className={`mediumText ${styles.participantsText}`}>
               Попутчики:
             </p>
-            {[...participants, ...participants, ...participants, ...participants, ...participants, ...participants, ...participants, ...participants].map((e, index: number) => (
+            {participants.map((e, index: number) => (
               <div
                 key={index}
                 className={`lightText ${styles.participantsText}`}
