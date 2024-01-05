@@ -33,9 +33,10 @@
 }
 
 .participantsText {
-  text-align: left;
-  font-size: 20px;
+  font-size: 14px;
   color: var(--text-color);
+  display: flex;
+  align-items: center;
 }
 
 .content {

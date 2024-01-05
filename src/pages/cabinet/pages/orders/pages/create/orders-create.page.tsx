@@ -115,7 +115,7 @@ export const OrdersCreatePage = () => {
     setLoading(true);
     createOrderApi(accessTokenGetter(), requestData)
       .then((res) => {
-        navigate('/cabinets/order/' + res.id);
+        navigate('/cabinet/orders/' + res.id);
       })
       .catch(() => setErrorAfterCreating(true))
       .finally(() => setLoading(false))

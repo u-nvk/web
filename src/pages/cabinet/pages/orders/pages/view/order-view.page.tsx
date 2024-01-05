@@ -238,10 +238,10 @@ export const OrderViewPage = () => {
               {participants.map((e, index: number) => (
                 <div
                   key={index}
-                  className={`regularText ${styles.participantsText}`}
+                  className={`lightText ${styles.participantsText}`}
                 >
-                  <span>
-                    {e.firstname} {e.surname}{" "}
+                  <span style={{ marginRight: '7px' }}>
+                    {e.firstname} {e.surname}
                   </span>
                   <img
                     src={vkIcon}
