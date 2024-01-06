@@ -1,13 +1,14 @@
 .mainDiv {
-  height: 100%;
+  height: 90%;
   display: flex;
   flex-direction: column;
   padding: 5%;
 }
 
 .createOrderBtn {
-  height: 10%;
-  max-height: 41px;
+  height: 7%;
+  min-height: 41px;
+  max-height: 61px;
 }
 
 .buttonGroup {
