@@ -1,22 +1,29 @@
-import {ChangeEvent, useEffect, useState} from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import {
   ChipsComponent,
   IChip,
 } from "../../../../../../components/chips/chips.component";
 import styles from "./styles/orders-create.page.module.css";
 import Select, { SingleValue } from "react-select";
-import RadioButtons, {RadioButtonOption} from "../../../../../../components/radioButtons/radioButtons.component";
+import RadioButtons, {
+  RadioButtonOption,
+} from "../../../../../../components/radioButtons/radioButtons.component";
 import { useAccessToken } from "../../../../../../hooks/utils/use-id-from-token.hook";
+import { getTransports } from "../../../../../../api/get-transports/get-transports.api";
 import {
-  getTransports,
-} from "../../../../../../api/get-transports/get-transports.api";
-import {createOrderApi, PostCreateOrderRequestDto} from "../../../../../../api/create-order/create-order.api.ts";
-import {useNavigate} from "react-router-dom";
-import {LoaderComponent} from "../../../../../../components/loader/loader.component.tsx";
-import {ErrorBannerComponent} from "../../../../../../components/error-banner/error-banner.component.tsx";
+  createOrderApi,
+  PostCreateOrderRequestDto,
+} from "../../../../../../api/create-order/create-order.api.ts";
+import { useNavigate } from "react-router-dom";
+import { LoaderComponent } from "../../../../../../components/loader/loader.component.tsx";
+import { ErrorBannerComponent } from "../../../../../../components/error-banner/error-banner.component.tsx";
 // @ts-ignore
-import DatePicker from "react-datepicker";
+import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import ru from "date-fns/locale/ru"; // the locale you want
+import backArrow from "/icons/back.svg?url";
+
+registerLocale("ru", ru); // register it with the name you want
 
 type IPlace = {
   value: string;
@@ -26,21 +33,21 @@ type IPlace = {
 type ITransport = {
   value: string;
   label: string;
-}
+};
 
-const toNvkId: string = 'to-nvk';
-const fromNvkId: string = 'from-nvk';
+const toNvkId: string = "to-nvk";
+const fromNvkId: string = "from-nvk";
 type CustomChip = IChip & { value: string };
 const defaultDirections: CustomChip[] = [
   {
     id: toNvkId,
     title: "В кампус",
-    value: 'NVK'
+    value: "NVK",
   },
   {
     id: fromNvkId,
     title: "Из кампуса",
-    value: 'NVK'
+    value: "NVK",
   },
 ];
 
@@ -60,17 +67,23 @@ const customStyles = {
 };
 
 export const OrdersCreatePage = () => {
-
   const accessTokenGetter = useAccessToken();
   const navigate = useNavigate();
 
   const [direction, setDirection] = useState<CustomChip>(defaultDirections[0]);
   const [price, setPrice] = useState<number | null>(null);
-  const [secondDirection, setSecondDirection] = useState<SingleValue<IPlace>>(defaultPlaces[0]);
+  const [secondDirection, setSecondDirection] = useState<SingleValue<IPlace>>(
+    defaultPlaces[0]
+  );
   const [transports, setTransports] = useState<ITransport[]>();
-  const [selectedTransport, setSelectedTransport] = useState<ITransport | null>();
-  const startFreeSeatCountOptions: RadioButtonOption[] = new Array(6).fill(0).map((_, idx) => ({ value: `${idx + 1}`, name: `${idx + 1}` }))
-  const [startFreeSeatCount, setStartFreeSeatCount] = useState<number>(parseInt(startFreeSeatCountOptions[0].value));
+  const [selectedTransport, setSelectedTransport] =
+    useState<ITransport | null>();
+  const startFreeSeatCountOptions: RadioButtonOption[] = new Array(6)
+    .fill(0)
+    .map((_, idx) => ({ value: `${idx + 1}`, name: `${idx + 1}` }));
+  const [startFreeSeatCount, setStartFreeSeatCount] = useState<number>(
+    parseInt(startFreeSeatCountOptions[0].value)
+  );
   const [startDate, setStartDate] = useState(new Date());
 
   const [isLoading, setLoading] = useState(true);
@@ -78,9 +91,7 @@ export const OrdersCreatePage = () => {
   const [isErrorAfterCreating, setErrorAfterCreating] = useState(false);
 
   const handleDirectionChange = (id: string) => {
-    const targetDirection = defaultDirections.find(
-      (dir) => dir.id === id
-    );
+    const targetDirection = defaultDirections.find((dir) => dir.id === id);
     if (!targetDirection) {
       throw new Error("Not found selected direction");
     }
@@ -97,39 +108,45 @@ export const OrdersCreatePage = () => {
   };
 
   const saveOrder = () => {
-    if (price === null || !selectedTransport?.value || !secondDirection?.value) {
+    if (
+      price === null ||
+      !selectedTransport?.value ||
+      !secondDirection?.value
+    ) {
       throw new Error();
     }
 
     const requestData: PostCreateOrderRequestDto = {
       route: {
-        from: direction.id === fromNvkId ? 'NVK' : secondDirection?.value,
-        to: direction.id === toNvkId ? 'NVK' : secondDirection?.value
+        from: direction.id === fromNvkId ? "NVK" : secondDirection?.value,
+        to: direction.id === toNvkId ? "NVK" : secondDirection?.value,
       },
       price: price,
       transportId: selectedTransport?.value,
       startFreeSeatCount: startFreeSeatCount,
       timeStart: startDate.toISOString(),
-    }
+    };
 
     setLoading(true);
     createOrderApi(accessTokenGetter(), requestData)
       .then((res) => {
-        navigate('/cabinet/orders/' + res.id);
+        navigate("/cabinet/orders/" + res.id);
       })
       .catch(() => setErrorAfterCreating(true))
-      .finally(() => setLoading(false))
-  }
+      .finally(() => setLoading(false));
+  };
 
   const getAllTransports = async () => {
     try {
       const transports = await getTransports(accessTokenGetter());
-      setTransports(transports.transports.map((t) => {
-        return {
-          label: `${t.name} (${t.color}), ${t.plateNumber}`,
-          value: t.id,
-        }
-      }));
+      setTransports(
+        transports.transports.map((t) => {
+          return {
+            label: `${t.name} (${t.color}), ${t.plateNumber}`,
+            value: t.id,
+          };
+        })
+      );
     } catch (e) {
       setError(true);
     } finally {
@@ -142,19 +159,47 @@ export const OrdersCreatePage = () => {
   }, []);
 
   if (isLoading) {
-    return <div className={styles.loaderWrapper}><LoaderComponent showAfterMS={1000} /></div>
+    return (
+      <div className={styles.loaderWrapper}>
+        <LoaderComponent showAfterMS={1000} />
+      </div>
+    );
   }
 
   if (isError) {
-    return <div className={styles.loaderWrapper}><ErrorBannerComponent /></div>;
+    return (
+      <div className={styles.loaderWrapper}>
+        <ErrorBannerComponent />
+      </div>
+    );
   }
 
   if (isErrorAfterCreating) {
-    return <div className={styles.loaderWrapper}><ErrorBannerComponent /></div>;
+    return (
+      <div className={styles.loaderWrapper}>
+        <ErrorBannerComponent />
+      </div>
+    );
   }
+
+  const handleBackButtonClick = () => {
+    if (history.length > 2) {
+      history.back();
+    } else {
+      navigate("/cabinet/orders");
+    }
+  };
 
   return (
     <div className={styles.mainDiv}>
+      <div className={styles.wrapperBackArrow}>
+        <img
+          src={backArrow}
+          className={styles.backArrow}
+          onClick={handleBackButtonClick}
+          alt={"Назад"}
+        />
+      </div>
       <div className={styles.infoAndButtonDiv}>
         <div>
           <div className={styles.propertyDiv}>
@@ -167,7 +212,9 @@ export const OrdersCreatePage = () => {
             </div>
           </div>
           <div className={styles.propertyDiv}>
-            <span className={`regularText ${styles.text}`}>{direction.id === fromNvkId ? 'Куда' : 'Откуда'}</span>
+            <span className={`regularText ${styles.text}`}>
+              {direction.id === fromNvkId ? "Куда" : "Откуда"}
+            </span>
             <div className={styles.controlDiv}>
               <Select
                 options={defaultPlaces}
@@ -194,23 +241,29 @@ export const OrdersCreatePage = () => {
             </div>
           </div>
           <div className={styles.propertyDiv}>
-            <span className={`regularText ${styles.text}`}>Количество свободных мест</span>
+            <span className={`regularText ${styles.text}`}>
+              Количество свободных мест
+            </span>
             <div className={styles.controlDiv}>
               <RadioButtons
                 options={startFreeSeatCountOptions}
-                setValue={(option) => setStartFreeSeatCount(parseInt(option.value))}
+                setValue={(option) =>
+                  setStartFreeSeatCount(parseInt(option.value))
+                }
               />
             </div>
           </div>
           <div className={styles.propertyDiv}>
-            <span className={`regularText ${styles.text}`}>Стоимость</span>
+            <span className={`regularText ${styles.text}`}>
+              Стоимость с человека
+            </span>
             <div className={styles.controlDiv}>
               <div className={styles.inputContainer}>
                 <input
                   type="number"
                   pattern="\d*"
                   className={styles.rubleInput}
-                  value={price ?? ''}
+                  value={price ?? ""}
                   maxLength={5}
                   onChange={handlePriceChange}
                 />
@@ -223,19 +276,24 @@ export const OrdersCreatePage = () => {
             <div className={styles.controlDiv}>
               <div className={styles.inputContainer}>
                 <DatePicker
+                  locale="ru"
                   selected={startDate}
                   onChange={(date: Date) => setStartDate(date)}
                   showTimeSelect
                   dateFormat="Pp"
                   timeIntervals={10}
+                  customInput={
+                    <input className={styles.rubleInput} type="text" />
+                  }
                 />
               </div>
             </div>
           </div>
-
         </div>
         <div className={styles.wrapperBtn}>
-          <span onClick={saveOrder} className={`regularText ${styles.text}`}>Опубликовать</span>
+          <span onClick={saveOrder} className={`regularText ${styles.text}`}>
+            Опубликовать
+          </span>
         </div>
       </div>
     </div>

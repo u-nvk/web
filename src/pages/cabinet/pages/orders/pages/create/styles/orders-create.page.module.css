@@ -27,6 +27,14 @@
   width: 100%;
 }
 
+.backArrow {
+  width: 30px;
+}
+
+.wrapperBackArrow {
+  width: 90.8%;
+}
+
 .rubleInput {
   width: 100%;
   padding: 8px;
