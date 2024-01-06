@@ -1,7 +1,7 @@
 import styles from "./styles/order-view.page.module.css";
 import vkIcon from "/icons/VK.svg?url";
 import backArrow from "/icons/back.svg?url";
-import {useNavigate, useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   getOrderApi,
@@ -122,7 +122,7 @@ export const OrderViewPage = () => {
     if (history.length > 2) {
       history.back();
     } else {
-      navigate("/cabinet/orders")
+      navigate("/cabinet/orders");
     }
   };
 
@@ -160,7 +160,12 @@ export const OrderViewPage = () => {
     return (
       <div className={styles.container}>
         <div className={styles.wrapperBackArrow}>
-          <img src={backArrow} className={styles.backArrow} onClick={handleBackButtonClick} alt={'Назад'} />
+          <img
+            src={backArrow}
+            className={styles.backArrow}
+            onClick={handleBackButtonClick}
+            alt={"Назад"}
+          />
         </div>
         <div className={styles.wrapperAndParticipantsContent}>
           <div className={styles.wrapperContent}>
@@ -190,7 +195,7 @@ export const OrderViewPage = () => {
                     стоимость
                   </div>
                   <div className={`mediumText ${styles.infoText}`}>
-                    {order.price}
+                    {order.price}₽
                   </div>
                 </div>
                 <div className={styles.contentDateLine}>
@@ -254,9 +259,9 @@ export const OrderViewPage = () => {
                 key={index}
                 className={`lightText ${styles.participantsText}`}
               >
-                  <span style={{ marginRight: '7px' }}>
-                    {e.firstname} {e.surname}
-                  </span>
+                <span style={{ marginRight: "7px" }}>
+                  {e.firstname} {e.surname}
+                </span>
                 <img
                   src={vkIcon}
                   alt="VK"
