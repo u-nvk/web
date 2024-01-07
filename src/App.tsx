@@ -14,7 +14,7 @@ function App() {
   const storage = useStorage();
 
   return (
-    <>
+    <div className="wra">
       <ProfileDataContext.Provider
         value={{
           data: () => {
@@ -36,7 +36,7 @@ function App() {
       >
         <RouterProvider router={routes} />
       </ProfileDataContext.Provider>
-    </>
+    </div>
   );
 }
 
