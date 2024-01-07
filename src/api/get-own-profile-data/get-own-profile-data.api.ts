@@ -1,3 +1,5 @@
+import {makeReq} from "../make-req.ts";
+
 export interface GetProfileDataResponseDto {
   userId: string;
   userPid: string;
@@ -11,13 +13,12 @@ export interface GetProfileDataResponseDto {
 }
 
 export const getOwnProfileDataApi = async (accessToken: string) => {
-  const res = await fetch("https://urfu-nvk.ru/profile/api/v1/data/user", {
+  const res = await makeReq<GetProfileDataResponseDto>("https://urfu-nvk.ru/profile/api/v1/data/user", {
     headers: {
       "Content-Type": "application/json",
       "Authorization": `${accessToken}`,
     },
   })
 
-  const responseDto: GetProfileDataResponseDto = await res.json();
-  return responseDto;
+  return res;
 }

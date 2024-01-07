@@ -1,3 +1,5 @@
+import {makeReq} from "../make-req.ts";
+
 export interface GetOrderResponseDto {
   id: string;
   driverPid: string;
@@ -30,13 +32,12 @@ export const getOrderApi = async (
   accessToken: string,
   orderId: string,
 ) => {
-  const res = await fetch("https://urfu-nvk.ru/order/api/v1/order/" + orderId, {
+  const res = await makeReq<GetOrderResponseDto>("https://urfu-nvk.ru/order/api/v1/order/" + orderId, {
     headers: {
       "Content-Type": "application/json",
       "Authorization": `${accessToken}`,
     }
   })
 
-  const responseDto: GetOrderResponseDto = await res.json();
-  return responseDto;
+  return res;
 }

@@ -4,7 +4,7 @@ import Select from "react-select";
 import {useAccessToken} from "../../../../../../hooks/utils/use-id-from-token.hook.ts";
 import {useEffect, useState} from "react";
 import {
-  getOwnProfileDataApi,
+  getOwnProfileDataApi, GetProfileDataResponseDto,
 } from "../../../../../../api/get-own-profile-data/get-own-profile-data.api.ts";
 import {getTransports, GetTransportsResponseDto} from "../../../../../../api/get-transports/get-transports.api.ts";
 import {LoaderComponent} from "../../../../../../components/loader/loader.component.tsx";
@@ -12,6 +12,7 @@ import {ErrorBannerComponent} from "../../../../../../components/error-banner/er
 import {ButtonComponent} from "../../../../../../components/button/button.component.tsx";
 import {setProfileDataApi} from "../../../../../../api/set-profile-data/set-profile-data.api.ts";
 import {bindTransportApi} from "../../../../../../api/bind-transport/bind-transport.api.ts";
+import {useApi} from "../../../../../../hooks/utils/use-api.hook.ts";
 
 const bankOptions = [
   { value: '0', label: 'Сбербанк' },
@@ -41,6 +42,8 @@ const customStyles = {
 
 export const DriverPage = () => {
   const accessTokenGetter = useAccessToken();
+  const api = useApi();
+
   const [isPaymentInfoAlreadyExist, setPaymentInfoAlreadyExist] = useState(false);
   const [isTransportAlredyExist, setTransportAlreadyExist] = useState(false);
 
@@ -57,7 +60,7 @@ export const DriverPage = () => {
 
   const initComponent = async () => {
     Promise.all([
-      getOwnProfileDataApi(accessTokenGetter())
+      api<GetProfileDataResponseDto>(() => getOwnProfileDataApi(accessTokenGetter()))
         .then((value) => {
           if (value.payments && value.payments.length) {
             setBank(value.payments?.[0]?.bank);
@@ -65,7 +68,7 @@ export const DriverPage = () => {
             setPaymentInfoAlreadyExist(true);
           }
         }),
-      getTransports(accessTokenGetter())
+      api<GetTransportsResponseDto>(() => getTransports(accessTokenGetter()))
         .then((value) => {
           if (value.transports.length) {
             setTransportAlreadyExist(true);
@@ -106,10 +109,10 @@ export const DriverPage = () => {
       }
 
       try {
-        await setProfileDataApi(accessTokenGetter(), {
+        await api(() => setProfileDataApi(accessTokenGetter(), {
           paymentMethods: [{ phone: phoneValue, bank }],
           isDriver: true,
-        })
+        }))
       } catch (e) {
         console.log(e);
         setLoading(false);
@@ -124,11 +127,14 @@ export const DriverPage = () => {
       }
 
       try {
-        await bindTransportApi(accessTokenGetter(), {
-          name: transport.name,
-          color: transport.color,
-          plateNumber: transport.plateNumber,
-        })
+        const name = transport.name;
+        const color = transport.color;
+        const plateNumber = transport.plateNumber;
+        await api(() => bindTransportApi(accessTokenGetter(), {
+          name,
+          color,
+          plateNumber,
+        }))
       } catch (e) {
         console.log(e);
         setLoading(false);

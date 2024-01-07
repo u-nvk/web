@@ -1,3 +1,5 @@
+import {makeReq} from "../make-req.ts";
+
 export interface PostCreateOrderRequestDto {
   route: {
     from: string;
@@ -10,7 +12,7 @@ export interface PostCreateOrderRequestDto {
 }
 
 export const createOrderApi = async (accessToken: string, data: PostCreateOrderRequestDto) => {
-  const res = await fetch("https://urfu-nvk.ru/order/api/v1/order", {
+  const res = await makeReq<{ id: string }>("https://urfu-nvk.ru/order/api/v1/order", {
     method: "POST",
     body: JSON.stringify(data),
     headers: {
@@ -19,8 +21,7 @@ export const createOrderApi = async (accessToken: string, data: PostCreateOrderR
     }
   });
 
-  const responseDto: { id: string } = await res.json();
-  return responseDto;
+  return res;
 }
 
 

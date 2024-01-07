@@ -9,7 +9,7 @@ import RadioButtons, {
   RadioButtonOption,
 } from "../../../../../../components/radioButtons/radioButtons.component";
 import { useAccessToken } from "../../../../../../hooks/utils/use-id-from-token.hook";
-import { getTransports } from "../../../../../../api/get-transports/get-transports.api";
+import {getTransports, GetTransportsResponseDto} from "../../../../../../api/get-transports/get-transports.api";
 import {
   createOrderApi,
   PostCreateOrderRequestDto,
@@ -22,6 +22,7 @@ import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ru from "date-fns/locale/ru"; // the locale you want
 import backArrow from "/icons/back.svg?url";
+import {useApi} from "../../../../../../hooks/utils/use-api.hook.ts";
 
 registerLocale("ru", ru); // register it with the name you want
 
@@ -69,6 +70,7 @@ const customStyles = {
 export const OrdersCreatePage = () => {
   const accessTokenGetter = useAccessToken();
   const navigate = useNavigate();
+  const api = useApi();
 
   const [direction, setDirection] = useState<CustomChip>(defaultDirections[0]);
   const [price, setPrice] = useState<number | null>(null);
@@ -128,17 +130,17 @@ export const OrdersCreatePage = () => {
     };
 
     setLoading(true);
-    createOrderApi(accessTokenGetter(), requestData)
+    api<{ id: string }>(() => createOrderApi(accessTokenGetter(), requestData))
       .then((res) => {
         navigate("/cabinet/orders/" + res.id);
       })
       .catch(() => setErrorAfterCreating(true))
-      .finally(() => setLoading(false));
+      .finally(() => setLoading(false))
   };
 
   const getAllTransports = async () => {
     try {
-      const transports = await getTransports(accessTokenGetter());
+      const transports = await api<GetTransportsResponseDto>(() => getTransports(accessTokenGetter()));
       setTransports(
         transports.transports.map((t) => {
           return {

@@ -15,11 +15,15 @@ import { formatTimePipe } from "../../../../../../pipes/format-time.pipe.ts";
 import { formatDatePipe } from "../../../../../../pipes/format-date.pipe.ts";
 import { formatRoutePipe } from "../../../../../../pipes/format-route.pipe.ts";
 import { joinToOrderApi } from "../../../../../../api";
-import { getProfileData } from "../../../../../../api/get-profile-data/get-profile-data.api.ts";
+import {
+  GetDataByUseridResponseDto,
+  getProfileData
+} from "../../../../../../api/get-profile-data/get-profile-data.api.ts";
 import { translateBankPipe } from "../../../../../../pipes/translate-bank.pipe.ts";
 import { unjoinToOrderApi } from "../../../../../../api/unjoin-to-order/unjoin-to-order.api.ts";
 import { LoaderComponent } from "../../../../../../components/loader/loader.component.tsx";
 import { ErrorBannerComponent } from "../../../../../../components/error-banner/error-banner.component.tsx";
+import {useApi} from "../../../../../../hooks/utils/use-api.hook.ts";
 
 const redirectToVkById = (vkId: number): void => {
   window.open(`https://vk.com/id${vkId}`, "__blank");
@@ -30,6 +34,7 @@ export const OrderViewPage = () => {
   const accessTokenGetter = useAccessToken();
   const userPidGetter = useIdFromToken();
   const navigate = useNavigate();
+  const api = useApi();
   const [isPassedOrder, setIsPassedOrder] = useState(false);
   const [order, setOrder] = useState<GetOrderResponseDto | null>(null);
   const [isLoading, setLoading] = useState<boolean>(true);
@@ -57,7 +62,7 @@ export const OrderViewPage = () => {
 
     if (isJoined) {
       try {
-        await unjoinToOrderApi(accessTokenGetter(), order.id);
+        await api(() => unjoinToOrderApi(accessTokenGetter(), order.id));
         initComponentData();
       } catch (e) {
         setErrorInRequests(true);
@@ -66,7 +71,7 @@ export const OrderViewPage = () => {
       }
     } else {
       try {
-        await joinToOrderApi(accessTokenGetter(), order.id);
+        await api(() => joinToOrderApi(accessTokenGetter(), order.id));
         initComponentData();
       } catch (e) {
         setErrorWhenTryJoin(true);
@@ -82,11 +87,10 @@ export const OrderViewPage = () => {
       return;
     }
 
-    getOrderApi(accessTokenGetter(), params.id as string)
+    api<GetOrderResponseDto>(() => getOrderApi(accessTokenGetter(), params.id as string))
       .then((data) => {
         setOrder(data);
 
-        debugger;
         if (new Date(data.timeStart).getTime() < new Date().getTime()) {
           setIsPassedOrder(true);
         } else {
@@ -109,7 +113,7 @@ export const OrderViewPage = () => {
           }
         }
 
-        return getProfileData(accessTokenGetter(), data.driverPid);
+        return api<GetDataByUseridResponseDto>(() => getProfileData(accessTokenGetter(), data.driverPid));
       })
       .then((data) => {
         if (!data.payments[0]) {

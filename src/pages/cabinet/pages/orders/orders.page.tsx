@@ -8,8 +8,12 @@ import {useAccessToken, useIdFromToken} from "../../../../hooks/utils/use-id-fro
 import {formatTimePipe} from "../../../../pipes/format-time.pipe.ts";
 import {formatRoutePipe} from "../../../../pipes/format-route.pipe.ts";
 import {formatDateMonthTextPipe, formatDatePipe} from "../../../../pipes/format-date.pipe.ts";
-import {getOwnProfileDataApi} from "../../../../api/get-own-profile-data/get-own-profile-data.api.ts";
+import {
+  getOwnProfileDataApi,
+  GetProfileDataResponseDto
+} from "../../../../api/get-own-profile-data/get-own-profile-data.api.ts";
 import {ButtonComponent} from "../../../../components/button/button.component.tsx";
+import {useApi} from "../../../../hooks/utils/use-api.hook.ts";
 
 const defaultDirections: IChip[] = [
   {
@@ -26,6 +30,7 @@ export const OrdersPage = () => {
   const accessTokenGetter = useAccessToken();
   const userPidGetter = useIdFromToken();
   const navigate = useNavigate();
+  const api = useApi();
   const [direction, setDirection] = useState<IChip>(defaultDirections[0]);
   const [orders, setOrders] = useState<GetOrdersResponseDto['orders']>([]);
   const [visibleOrders, setVisibleOrders] = useState<Map<string, GetOrdersResponseDto['orders']>>(new Map())
@@ -66,7 +71,7 @@ export const OrdersPage = () => {
   }
 
   const getAllOrders = async () => {
-    const orders = await getOrders(accessTokenGetter());
+    const orders = await api<GetOrdersResponseDto>(() => getOrders(accessTokenGetter()));
     setOrders(orders.orders);
     sortVisibleList(direction, orders.orders);
   }
@@ -83,7 +88,7 @@ export const OrdersPage = () => {
 
   useEffect(() => {
     getAllOrders();
-    getOwnProfileDataApi(accessTokenGetter())
+    api<GetProfileDataResponseDto>(() => getOwnProfileDataApi(accessTokenGetter()))
       .then((res) => setIsDriver(res.isDriver))
   }, []);
 

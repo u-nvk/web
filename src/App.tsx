@@ -1,13 +1,10 @@
 import "./App.css";
-import { RouterProvider } from "react-router-dom";
-import { useState } from "react";
-import {
-  ProfileData,
-  ProfileDataContext,
-} from "./context/profile-data.context";
-import { useStorage } from "./hooks/utils/storage.hook";
-import { StorageKey } from "./enums";
-import { routes } from "./routes";
+import {RouterProvider} from "react-router-dom";
+import {useState} from "react";
+import {ProfileData, ProfileDataContext,} from "./context/profile-data.context";
+import {useStorage} from "./hooks/utils/storage.hook";
+import {StorageKey} from "./enums";
+import {routes} from "./routes";
 
 function App() {
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
@@ -32,6 +29,9 @@ function App() {
             setProfileData(data);
             storage.write(StorageKey.profile, JSON.stringify(data));
           },
+          clear: () => {
+            setProfileData(null)
+          }
         }}
       >
         <RouterProvider router={routes} />

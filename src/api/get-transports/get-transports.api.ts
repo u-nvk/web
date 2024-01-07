@@ -1,3 +1,5 @@
+import {makeReq} from "../make-req.ts";
+
 export interface GetTransportsResponseDto {
   transports: {
     id: string;
@@ -8,7 +10,7 @@ export interface GetTransportsResponseDto {
 }
 
 export const getTransports = async (accessToken: string) => {
-  const res = await fetch(
+  const res = await makeReq<GetTransportsResponseDto>(
     "https://urfu-nvk.ru/profile/api/v1/data/transports",
     {
       headers: {
@@ -17,6 +19,6 @@ export const getTransports = async (accessToken: string) => {
       },
     }
   );
-  const responseDto: GetTransportsResponseDto = await res.json();
-  return responseDto;
+
+  return res;
 };

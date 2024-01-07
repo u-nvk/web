@@ -1,3 +1,5 @@
+import {makeReq} from "../make-req.ts";
+
 export interface GetOrdersResponseDto {
   orders: {
     id: string;
@@ -16,12 +18,12 @@ export interface GetOrdersResponseDto {
 export const getOrders = async (
   accessToken: string,
 ) => {
-  const res = await fetch("https://urfu-nvk.ru/order/api/v1/order", {
+  const res = await makeReq<GetOrdersResponseDto>("https://urfu-nvk.ru/order/api/v1/order", {
     headers: {
       "Content-Type": "application/json",
       "Authorization": `${accessToken}`,
     }
   })
-  const responseDto: GetOrdersResponseDto = await res.json();
-  return responseDto;
+
+  return res;
 }

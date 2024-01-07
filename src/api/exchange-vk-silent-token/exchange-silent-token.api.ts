@@ -1,3 +1,5 @@
+import {makeReq} from "../make-req.ts";
+
 interface ExchangeVkTokenResponseDto {
   accessToken: string;
 }
@@ -8,7 +10,7 @@ export const exchangeVkSilentTokenApi = async (
   firstname: string,
   lastname: string
 ): Promise<{ accessToken: string }> => {
-  const res = await fetch("https://urfu-nvk.ru/identity/api/v1/exchange-vk-token", {
+  const res = await makeReq<ExchangeVkTokenResponseDto>("https://urfu-nvk.ru/identity/api/v1/exchange-vk-token", {
     method: "POST",
     body: JSON.stringify({
       vkToken: vkToken,
@@ -20,6 +22,6 @@ export const exchangeVkSilentTokenApi = async (
       "Content-Type": "application/json",
     },
   });
-  const responseDto: ExchangeVkTokenResponseDto = await res.json();
-  return responseDto;
+
+  return res;
 };

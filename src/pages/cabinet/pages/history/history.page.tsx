@@ -11,6 +11,7 @@ import {
   getHistoryOrders,
   GetHistoryOrdersResponseDto
 } from "../../../../api/get-history-orders/get-history-orders.api.ts";
+import {useApi} from "../../../../hooks/utils/use-api.hook.ts";
 
 const defaultDirections: IChip[] = [
   {
@@ -26,6 +27,7 @@ const defaultDirections: IChip[] = [
 export const HistoryPage = () => {
   const accessTokenGetter = useAccessToken();
   const userPidGetter = useIdFromToken();
+  const api = useApi();
   const [direction, setDirection] = useState<IChip>(defaultDirections[0]);
   const [orders, setOrders] = useState<GetHistoryOrdersResponseDto['list']>([]);
   const [visibleOrders, setVisibleOrders] = useState<Map<string, GetHistoryOrdersResponseDto['list']>>(new Map())
@@ -65,7 +67,7 @@ export const HistoryPage = () => {
   }
 
   const getAllOrders = async () => {
-    const orders = await getHistoryOrders(accessTokenGetter());
+    const orders = await api<GetHistoryOrdersResponseDto>(() => getHistoryOrders(accessTokenGetter()));
     setOrders(orders.list);
     sortVisibleList(direction, orders.list);
   }

@@ -9,10 +9,14 @@ import {useAccessToken} from "../../../../hooks/utils/use-id-from-token.hook.ts"
 import {LoaderComponent} from "../../../../components/loader/loader.component.tsx";
 import {ButtonComponent} from "../../../../components/button/button.component.tsx";
 import {useNavigate} from "react-router-dom";
+import {useApi} from "../../../../hooks/utils/use-api.hook.ts";
+import {useLogout} from "../../../../hooks/utils/logout.hool.ts";
 
 export const ProfilePage = () => {
   const accessTokenGetter = useAccessToken();
   const navigator = useNavigate();
+  const api = useApi();
+  const logout = useLogout();
   const [profileData, setProfileData] = useState<GetProfileDataResponseDto | null>(null);
 
   const [isLoading, setLoading] = useState(true);
@@ -21,8 +25,12 @@ export const ProfilePage = () => {
     navigator('/cabinet/profile/driver');
   }
 
+  const logoutHandle = () => {
+    logout();
+  }
+
   useEffect(() => {
-    getOwnProfileDataApi(accessTokenGetter())
+    api<GetProfileDataResponseDto>(() => getOwnProfileDataApi(accessTokenGetter()))
       .then((value) => {
         setProfileData(value);
       })
@@ -51,6 +59,9 @@ export const ProfilePage = () => {
       </div>
       <div className={`${styles.userPropertyDiv} ${styles.btn}`}>
         <ButtonComponent title={'Водительские настройки'} onClick={navigateToDriverSettings}/>
+      </div>
+      <div className={`${styles.userPropertyDiv} ${styles.btn}`}>
+        <ButtonComponent title={'Выйти'} onClick={logoutHandle}/>
       </div>
     </div>
   );
