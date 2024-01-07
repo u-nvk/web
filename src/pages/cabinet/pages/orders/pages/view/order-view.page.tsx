@@ -30,6 +30,7 @@ export const OrderViewPage = () => {
   const accessTokenGetter = useAccessToken();
   const userPidGetter = useIdFromToken();
   const navigate = useNavigate();
+  const [isPassedOrder, setIsPassedOrder] = useState(false);
   const [order, setOrder] = useState<GetOrderResponseDto | null>(null);
   const [isLoading, setLoading] = useState<boolean>(true);
   const [isErrorInRequests, setErrorInRequests] = useState(false);
@@ -84,6 +85,13 @@ export const OrderViewPage = () => {
     getOrderApi(accessTokenGetter(), params.id as string)
       .then((data) => {
         setOrder(data);
+
+        debugger;
+        if (new Date(data.timeStart).getTime() < new Date().getTime()) {
+          setIsPassedOrder(true);
+        } else {
+          setIsPassedOrder(false);
+        }
 
         const userPid = userPidGetter();
 
@@ -199,12 +207,16 @@ export const OrderViewPage = () => {
                   </div>
                 </div>
                 <div className={styles.contentDateLine}>
-                  <div className={`lightText ${styles.littleText}`}>
-                    свободно
-                  </div>
-                  <div className={`mediumText ${styles.infoText}`}>
-                    {order.leftCount}
-                  </div>
+                  {!isPassedOrder &&
+                    <>
+                      <div className={`lightText ${styles.littleText}`}>
+                        свободно
+                      </div>
+                      <div className={`mediumText ${styles.infoText}`}>
+                        {order.leftCount}
+                      </div>
+                    </>
+                  }
                 </div>
               </div>
               <div className={styles.contentLine}>
@@ -271,36 +283,38 @@ export const OrderViewPage = () => {
             ))}
           </div>
         )}
-        <div
-          className={`${styles.wrapperBtn} ${
-            !isJoined && !isErrorWhenTryJoin && !isOrderDriver
-              ? styles.wrapperBtnNotJoined
-              : ""
-          } ${isJoined || isOrderDriver ? styles.wrapperBtnJoined : ""} ${
-            isErrorWhenTryJoin && !isOrderDriver ? styles.wrapperBtnError : ""
-          }`}
-          onClick={joinToOrder}
-        >
-          {!isErrorWhenTryJoin && !isJoined && isCanJoin && !isOrderDriver && (
-            <span className={`regularText ${styles.text}`}>Присоединиться</span>
-          )}
-          {isErrorWhenTryJoin && (
-            <span className={`regularText ${styles.text}`}>
+        {!isPassedOrder &&
+          <div
+            className={`${styles.wrapperBtn} ${
+              !isJoined && !isErrorWhenTryJoin && !isOrderDriver
+                ? styles.wrapperBtnNotJoined
+                : ""
+            } ${isJoined || isOrderDriver ? styles.wrapperBtnJoined : ""} ${
+              isErrorWhenTryJoin && !isOrderDriver ? styles.wrapperBtnError : ""
+            }`}
+            onClick={joinToOrder}
+          >
+            {!isErrorWhenTryJoin && !isJoined && isCanJoin && !isOrderDriver && (
+              <span className={`regularText ${styles.text}`}>Присоединиться</span>
+            )}
+            {isErrorWhenTryJoin && (
+              <span className={`regularText ${styles.text}`}>
               Произошла ошибка
             </span>
-          )}
-          {!isErrorWhenTryJoin && isJoined && !isOrderDriver && (
-            <span className={`regularText ${styles.text}`}>Отписаться</span>
-          )}
-          {!isCanJoin && !isErrorWhenTryJoin && !isOrderDriver && (
-            <span className={`regularText ${styles.text}`}>
+            )}
+            {!isErrorWhenTryJoin && isJoined && !isOrderDriver && (
+              <span className={`regularText ${styles.text}`}>Отписаться</span>
+            )}
+            {!isCanJoin && !isErrorWhenTryJoin && !isOrderDriver && (
+              <span className={`regularText ${styles.text}`}>
               Не осталось свободных мест
             </span>
-          )}
-          {isOrderDriver && (
-            <span className={`regularText ${styles.text}`}>Вы водитель</span>
-          )}
-        </div>
+            )}
+            {isOrderDriver && (
+              <span className={`regularText ${styles.text}`}>Вы водитель</span>
+            )}
+          </div>
+        }
       </div>
     );
   }
