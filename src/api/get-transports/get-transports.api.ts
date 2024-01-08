@@ -1,12 +1,14 @@
 import {makeReq} from "../make-req.ts";
 
 export interface GetTransportsResponseDto {
-  transports: {
-    id: string;
-    name: string;
-    plateNumber: string;
-    color: string;
-  }[];
+  transports: GetTransportsItemResponseDto[];
+}
+
+export interface GetTransportsItemResponseDto {
+  id: string;
+  name: string;
+  plateNumber: string;
+  color: string;
 }
 
 export const getTransports = async (accessToken: string) => {

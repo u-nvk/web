@@ -60,13 +60,13 @@
 }
 
 .wrapperBtn {
+  cursor: pointer;
   height: 7%;
   width: 100%;
   border-radius: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: transparent 1px solid;
   background-color: #dcedff;
   border: #9fcaff 1px solid;
 }

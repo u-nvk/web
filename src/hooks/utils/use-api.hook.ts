@@ -1,5 +1,6 @@
 import {UnauthError} from "../../api/unauth.error.ts";
 import {useLogout} from "./logout.hool.ts";
+import toast from "react-hot-toast";
 
 export const useApi = () => {
   const logout = useLogout();
@@ -12,6 +13,8 @@ export const useApi = () => {
       if (e instanceof UnauthError) {
         logout();
       }
+
+      toast.error('Произошла ошибка, попробуйте позже');
 
       throw e;
     }

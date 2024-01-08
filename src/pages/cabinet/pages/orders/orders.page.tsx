@@ -54,7 +54,7 @@ export const OrdersPage = () => {
       } else {
         return order.route.from === 'NVK';
       }
-    });
+    }).filter((item) => item.leftCount > 0)
 
     const resultMap: Map<string, GetOrdersResponseDto['orders']> = new Map();
 

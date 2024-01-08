@@ -6,13 +6,20 @@ import {useEffect, useState} from "react";
 import {
   getOwnProfileDataApi, GetProfileDataResponseDto,
 } from "../../../../../../api/get-own-profile-data/get-own-profile-data.api.ts";
-import {getTransports, GetTransportsResponseDto} from "../../../../../../api/get-transports/get-transports.api.ts";
+import {
+  getTransports,
+  GetTransportsItemResponseDto,
+  GetTransportsResponseDto
+} from "../../../../../../api/get-transports/get-transports.api.ts";
 import {LoaderComponent} from "../../../../../../components/loader/loader.component.tsx";
 import {ErrorBannerComponent} from "../../../../../../components/error-banner/error-banner.component.tsx";
 import {ButtonComponent} from "../../../../../../components/button/button.component.tsx";
 import {setProfileDataApi} from "../../../../../../api/set-profile-data/set-profile-data.api.ts";
 import {bindTransportApi} from "../../../../../../api/bind-transport/bind-transport.api.ts";
 import {useApi} from "../../../../../../hooks/utils/use-api.hook.ts";
+import {TransportSettingsComponent} from "../../components/transport-settings/transport-settings.component.tsx";
+import {markTransportAsUnactiveApi} from "../../../../../../api/bind-transport/mark-transport-as-unactive.api.ts";
+import toast from "react-hot-toast";
 
 const bankOptions = [
   { value: '0', label: 'Сбербанк' },
@@ -49,7 +56,8 @@ export const DriverPage = () => {
 
   const [phoneToTransfer, setPhoneToTransfer] = useState<string | null>(null);
   const [bank, setBank] = useState(0);
-  const [transport, setTransport] = useState<Partial<GetTransportsResponseDto['transports'][number]>>({})
+  const [transports, setTransports] = useState<Partial<GetTransportsResponseDto['transports']>>([])
+  const [newTransports, setNewTransports] = useState<Partial<GetTransportsItemResponseDto>[]>([])
 
   const [isLoading, setLoading] = useState(true);
   const [isError, setError] = useState(false);
@@ -59,6 +67,7 @@ export const DriverPage = () => {
   }, []);
 
   const initComponent = async () => {
+    setNewTransports([]);
     Promise.all([
       api<GetProfileDataResponseDto>(() => getOwnProfileDataApi(accessTokenGetter()))
         .then((value) => {
@@ -72,11 +81,7 @@ export const DriverPage = () => {
         .then((value) => {
           if (value.transports.length) {
             setTransportAlreadyExist(true);
-            setTransport({
-              name: value.transports[0].name,
-              color: value.transports[0].color,
-              plateNumber: value.transports[0].plateNumber,
-            })
+            setTransports(value.transports);
           }
         })
     ])
@@ -85,17 +90,6 @@ export const DriverPage = () => {
         setError(true);
       })
       .finally(() => setLoading(false))
-  }
-
-  const onTransportSettingsChange = (type: 'name' | 'color' | 'plateNumber', value: string) => {
-    setTransport((curr) => {
-      if (type === 'plateNumber') {
-        curr[type] = value.toUpperCase();
-      } else {
-        curr[type] = value;
-      }
-      return curr;
-    })
   }
 
   const saveState = async () => {
@@ -119,30 +113,24 @@ export const DriverPage = () => {
         setError(true);
       }
     }
-
-    if (!isTransportAlredyExist) {
-      if (!transport.name || !transport.color || !transport.plateNumber) {
-        setError(true);
-        return;
-      }
-
-      try {
-        const name = transport.name;
-        const color = transport.color;
-        const plateNumber = transport.plateNumber;
-        await api(() => bindTransportApi(accessTokenGetter(), {
-          name,
-          color,
-          plateNumber,
-        }))
-      } catch (e) {
-        console.log(e);
-        setLoading(false);
-        setError(true);
-      }
-    }
     await initComponent();
     setLoading(false);
+  }
+
+  const onTransportSave = async (transport: Omit<GetTransportsResponseDto['transports'][number], 'id'>) => {
+    await api(() => bindTransportApi(accessTokenGetter(), transport))
+    toast.success('Транспорт сохранен');
+    await initComponent();
+  }
+
+  const onTransportDelete = async (id: string) => {
+    await api(() => markTransportAsUnactiveApi(accessTokenGetter(), id))
+    toast.success('Транспорт удален');
+    await initComponent();
+  }
+
+  const createNewTransport = () => {
+    setNewTransports([...newTransports, {}])
   }
 
   if (isLoading) {
@@ -179,35 +167,15 @@ export const DriverPage = () => {
             />
           </div>
         </div>
+        {!isPaymentInfoAlreadyExist && <ButtonComponent title={'Сохранить настройки оплаты'} onClick={saveState} />}
       </div>
       <div className={`${styles.nextH}`}>
-        <h3 className={`boldText`}>Автомобиль</h3>
-        <div className={styles.userPropertyDiv}>
-          <p className={`${styles.text} regularText`}>Марка и модель</p>
-          <div className={styles.userPropertyValueDiv}>
-            <InputComponent onChange={onTransportSettingsChange.bind(this, 'name')} isReadonly={isTransportAlredyExist}
-                            defaultText={transport.name ?? ''} isNumberOnyl={false}/>
-          </div>
+        <h3 className={`boldText`}>Автомобили</h3>
+        {transports.map((t) => <TransportSettingsComponent originTransport={t} onSave={onTransportSave} onDelete={onTransportDelete} isAlreadyExist={true} />)}
+        {newTransports.map((t) => <TransportSettingsComponent isAlreadyExist={false} onSave={onTransportSave} onDelete={onTransportDelete} />)}
+        <div>
+          {newTransports.length < 1 && <div className={`${styles.nextH} ${styles.btn}`}><ButtonComponent title={'Добавить'} onClick={createNewTransport} /></div>}
         </div>
-        <div className={styles.userPropertyDiv}>
-          <p className={`${styles.text} regularText`}>Цвет</p>
-          <div className={styles.userPropertyValueDiv}>
-            <InputComponent onChange={onTransportSettingsChange.bind(this, 'color')} isReadonly={isTransportAlredyExist}
-                            defaultText={transport.color ?? ''} isNumberOnyl={false}/>
-          </div>
-        </div>
-        <div className={styles.userPropertyDiv}>
-          <p className={`${styles.text} regularText`}>Гос. номер (русскими буквами, с регионом)</p>
-          <div className={styles.userPropertyValueDiv}>
-            <InputComponent onChange={onTransportSettingsChange.bind(this, 'plateNumber')} isReadonly={isTransportAlredyExist}
-                            defaultText={transport.plateNumber ?? ''} isNumberOnyl={false}/>
-          </div>
-        </div>
-      </div>
-      <div>
-        {!isTransportAlredyExist && isPaymentInfoAlreadyExist && <ButtonComponent title={'Сохранить настройки транспорта'} onClick={saveState} />}
-        {isTransportAlredyExist && !isPaymentInfoAlreadyExist && <ButtonComponent title={'Сохранить настройки оплаты'} onClick={saveState} />}
-        {!isTransportAlredyExist && !isPaymentInfoAlreadyExist && <ButtonComponent title={'Сохранить все настройки'} onClick={saveState} />}
       </div>
     </div>
   )

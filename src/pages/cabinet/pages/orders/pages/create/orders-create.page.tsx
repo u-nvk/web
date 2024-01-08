@@ -56,6 +56,8 @@ const defaultPlaces: IPlace[] = [
   { value: "MUB", label: "ГУК" },
   { value: "D11", label: "Общежитие №11" },
   { value: "G8M", label: "Гринвич со стороны 8 марта" },
+  { value: "UGI", label: "УГИ" },
+  { value: "RV", label: "ЖД Вокзал" },
   // { value: "4", label: "Вторчермет" },
   // { value: "5", label: "Ботаника" },
 ];
@@ -281,6 +283,7 @@ export const OrdersCreatePage = () => {
                   locale="ru"
                   selected={startDate}
                   onChange={(date: Date) => setStartDate(date)}
+                  minDate={new Date()}
                   showTimeSelect
                   dateFormat="Pp"
                   timeIntervals={10}
@@ -292,8 +295,8 @@ export const OrdersCreatePage = () => {
             </div>
           </div>
         </div>
-        <div className={styles.wrapperBtn}>
-          <span onClick={saveOrder} className={`regularText ${styles.text}`}>
+        <div className={styles.wrapperBtn} onClick={saveOrder}>
+          <span className={`regularText ${styles.text}`}>
             Опубликовать
           </span>
         </div>
