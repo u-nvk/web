@@ -63,7 +63,7 @@ export const OrderViewPage = () => {
     if (isJoined) {
       try {
         await api(() => unjoinToOrderApi(accessTokenGetter(), order.id));
-        initComponentData();
+        await initComponentData();
       } catch (e) {
         setErrorInRequests(true);
       } finally {
@@ -72,7 +72,7 @@ export const OrderViewPage = () => {
     } else {
       try {
         await api(() => joinToOrderApi(accessTokenGetter(), order.id));
-        initComponentData();
+        await initComponentData();
       } catch (e) {
         setErrorWhenTryJoin(true);
         setIsJoined(false);

@@ -6,6 +6,7 @@ import {
   GetTransportsResponseDto
 } from "../../../../../../api/get-transports/get-transports.api.ts";
 import {ButtonComponent} from "../../../../../../components/button/button.component.tsx";
+import toast from "react-hot-toast";
 
 export interface ITransportSettings {
   isAlreadyExist: boolean;
@@ -13,6 +14,8 @@ export interface ITransportSettings {
   onDelete: (id: string) => void;
   originTransport?: GetTransportsItemResponseDto;
 }
+
+const regexp = /^([АВЕКМНОРСТУХ][0-9]{3}[АВЕКМНОРСТУХ]{2}[0-9]{2,3})?$/gm;
 
 export const TransportSettingsComponent: FC<ITransportSettings> = ({ isAlreadyExist, onDelete, onSave, originTransport }) => {
   const [transport, setTransport] = useState<Partial<GetTransportsItemResponseDto>>(originTransport ?? {})
@@ -42,9 +45,10 @@ export const TransportSettingsComponent: FC<ITransportSettings> = ({ isAlreadyEx
   const onTransportSave = async () => {
     const name = transport.name;
     const color = transport.color;
-    const plateNumber = transport.plateNumber;
+    const plateNumber = transport.plateNumber?.toUpperCase();
 
-    if (!name || !color || !plateNumber) {
+    if (!name || !color || !plateNumber || !regexp.test(plateNumber)) {
+      toast.error('Некорректная форма');
       return;
     }
 
@@ -78,6 +82,7 @@ export const TransportSettingsComponent: FC<ITransportSettings> = ({ isAlreadyEx
           <p className={`${styles.text} regularText`}>Гос. номер (русскими буквами, с регионом)</p>
           <div className={styles.userPropertyValueDiv}>
             <InputComponent onChange={onTransportSettingsChange.bind(this, 'plateNumber')}
+                            placeholder={"Н200ВК24"}
                             isReadonly={isAlreadyExist}
                             defaultText={transport.plateNumber ?? ''} isNumberOnyl={false}/>
           </div>

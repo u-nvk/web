@@ -78,9 +78,7 @@ export const DriverPage = () => {
         }),
       api<GetTransportsResponseDto>(() => getTransports(accessTokenGetter()))
         .then((value) => {
-          if (value.transports.length) {
-            setTransports(value.transports);
-          }
+          setTransports(value.transports);
         })
     ])
       .catch((e) => {
@@ -169,8 +167,8 @@ export const DriverPage = () => {
       </div>
       <div className={`${styles.nextH}`}>
         <h3 className={`boldText`}>Автомобили</h3>
-        {transports.map((t) => <TransportSettingsComponent originTransport={t} onSave={onTransportSave} onDelete={onTransportDelete} isAlreadyExist={true} />)}
-        {newTransports.map(() => <TransportSettingsComponent isAlreadyExist={false} onSave={onTransportSave} onDelete={onTransportDelete} />)}
+        {transports.map((t) => <TransportSettingsComponent key={t?.id} originTransport={t} onSave={onTransportSave} onDelete={onTransportDelete} isAlreadyExist={true} />)}
+        {newTransports.map(() => <TransportSettingsComponent key={'unn'} isAlreadyExist={false} onSave={onTransportSave} onDelete={onTransportDelete} />)}
         <div>
           {newTransports.length < 1 && <div className={`${styles.nextH} ${styles.btn}`}><ButtonComponent title={'Добавить'} onClick={createNewTransport} /></div>}
         </div>
