@@ -23,6 +23,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import ru from "date-fns/locale/ru"; // the locale you want
 import backArrow from "/icons/back.svg?url";
 import {useApi} from "../../../../../../hooks/utils/use-api.hook.ts";
+import toast from "react-hot-toast";
 
 registerLocale("ru", ru); // register it with the name you want
 
@@ -112,12 +113,25 @@ export const OrdersCreatePage = () => {
   };
 
   const saveOrder = () => {
-    if (
-      price === null ||
-      !selectedTransport?.value ||
-      !secondDirection?.value
-    ) {
-      throw new Error();
+    if (!price) {
+      toast.error('Укажите стоимость поездки');
+      return;
+    }
+
+    if (!selectedTransport?.value) {
+      toast.error('Укажите транспорт');
+      return;
+    }
+
+    if (!secondDirection?.value) {
+      toast.error('Укажите направление');
+      return;
+    }
+
+    // 1 мин = 600000 мс
+    if (startDate.getTime() <= new Date().getTime() + 600000) {
+      toast.error('Время отправления должно быть минимум через 10 минут');
+      return;
     }
 
     const requestData: PostCreateOrderRequestDto = {
