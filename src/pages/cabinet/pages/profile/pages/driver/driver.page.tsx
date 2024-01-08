@@ -52,7 +52,6 @@ export const DriverPage = () => {
   const api = useApi();
 
   const [isPaymentInfoAlreadyExist, setPaymentInfoAlreadyExist] = useState(false);
-  const [isTransportAlredyExist, setTransportAlreadyExist] = useState(false);
 
   const [phoneToTransfer, setPhoneToTransfer] = useState<string | null>(null);
   const [bank, setBank] = useState(0);
@@ -80,7 +79,6 @@ export const DriverPage = () => {
       api<GetTransportsResponseDto>(() => getTransports(accessTokenGetter()))
         .then((value) => {
           if (value.transports.length) {
-            setTransportAlreadyExist(true);
             setTransports(value.transports);
           }
         })
@@ -172,7 +170,7 @@ export const DriverPage = () => {
       <div className={`${styles.nextH}`}>
         <h3 className={`boldText`}>Автомобили</h3>
         {transports.map((t) => <TransportSettingsComponent originTransport={t} onSave={onTransportSave} onDelete={onTransportDelete} isAlreadyExist={true} />)}
-        {newTransports.map((t) => <TransportSettingsComponent isAlreadyExist={false} onSave={onTransportSave} onDelete={onTransportDelete} />)}
+        {newTransports.map(() => <TransportSettingsComponent isAlreadyExist={false} onSave={onTransportSave} onDelete={onTransportDelete} />)}
         <div>
           {newTransports.length < 1 && <div className={`${styles.nextH} ${styles.btn}`}><ButtonComponent title={'Добавить'} onClick={createNewTransport} /></div>}
         </div>

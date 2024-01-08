@@ -1,6 +1,6 @@
 import styles from "./transport-settings.page.styles.module.css";
 import {InputComponent} from "../../../../../../components/input/input.component.tsx";
-import {FC, useEffect, useState} from "react";
+import {FC, useState} from "react";
 import {
   GetTransportsItemResponseDto,
   GetTransportsResponseDto
