@@ -54,7 +54,7 @@ export const OrdersPage = () => {
       } else {
         return order.route.from === 'NVK';
       }
-    }).filter((item) => item.leftCount > 0)
+    }).filter((item) => item.leftCount > 0 || isUserJoin(item.participantIds) || isUserDriver(item.driverPid))
 
     const resultMap: Map<string, GetOrdersResponseDto['orders']> = new Map();
 

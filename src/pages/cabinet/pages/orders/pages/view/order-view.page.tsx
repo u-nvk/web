@@ -24,10 +24,16 @@ import { unjoinToOrderApi } from "../../../../../../api/unjoin-to-order/unjoin-t
 import { LoaderComponent } from "../../../../../../components/loader/loader.component.tsx";
 import { ErrorBannerComponent } from "../../../../../../components/error-banner/error-banner.component.tsx";
 import {useApi} from "../../../../../../hooks/utils/use-api.hook.ts";
+import toast from "react-hot-toast";
 
 const redirectToVkById = (vkId: number): void => {
   window.open(`https://vk.com/id${vkId}`, "__blank");
 };
+
+const copyToClipboard = (text: string) => {
+  navigator.clipboard.writeText(text)
+    .then(() => toast.success('Скопировано'))
+}
 
 export const OrderViewPage = () => {
   const params = useParams();
@@ -41,6 +47,7 @@ export const OrderViewPage = () => {
   const [isErrorInRequests, setErrorInRequests] = useState(false);
   const [isErrorWhenTryJoin, setErrorWhenTryJoin] = useState<boolean>(false);
   const [isJoined, setIsJoined] = useState<boolean>(false);
+  const [paymentNumber, setPaymentNumber] = useState<string | null>(null);
   const [paymentBank, setPaymentBank] = useState<number | null>(null);
   const [participants, setParticipants] = useState<
     GetOrderResponseDto["participants"]
@@ -121,6 +128,7 @@ export const OrderViewPage = () => {
         }
 
         setPaymentBank(data.payments[0].bank);
+        setPaymentNumber(data.payments[0].phone);
       })
       .catch(() => {
         setErrorInRequests(true);
@@ -212,14 +220,14 @@ export const OrderViewPage = () => {
                 </div>
                 <div className={styles.contentDateLine}>
                   {!isPassedOrder &&
-                    <>
-                      <div className={`lightText ${styles.littleText}`}>
-                        свободно
-                      </div>
-                      <div className={`mediumText ${styles.infoText}`}>
-                        {order.leftCount}
-                      </div>
-                    </>
+                      <>
+                          <div className={`lightText ${styles.littleText}`}>
+                              свободно
+                          </div>
+                          <div className={`mediumText ${styles.infoText}`}>
+                            {order.leftCount}
+                          </div>
+                      </>
                   }
                 </div>
               </div>
@@ -251,15 +259,21 @@ export const OrderViewPage = () => {
                 </div>
               </div>
               <div className={`${styles.contentLine}`}>
-                <div className={`lightText ${styles.littleText}`}>номер</div>
+                <div className={`lightText ${styles.littleText}`}>номер транспортного средства</div>
                 <div className={`mediumText ${styles.infoText}`}>
                   {order.transport.plateNumber}
                 </div>
               </div>
               <div className={`${styles.contentLine}`}>
-                <div className={`lightText ${styles.littleText}`}>банк</div>
+                <div className={`lightText ${styles.littleText}`}>банк для перевода</div>
                 <div className={`mediumText ${styles.infoText}`}>
                   {translateBankPipe(paymentBank)}
+                </div>
+              </div>
+              <div className={`${styles.contentLine}`} onClick={() => copyToClipboard(paymentNumber ?? '')}>
+                <div className={`lightText ${styles.littleText}`}>номер для перевода</div>
+                <div className={`mediumText ${styles.infoText}`}>
+                  {paymentNumber}
                 </div>
               </div>
             </div>
