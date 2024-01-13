@@ -34,8 +34,6 @@ const registerVkAuth = (
 
       switch (type) {
         case ConnectEvents.OneTapAuthEventsSDK.LOGIN_SUCCESS: // = 'VKSDKOneTapAuthLoginSuccess'
-          console.log(e);
-
           // eslint-disable-next-line no-case-declarations
           const payload: VKSilentAuthPayload = e.payload as VKSilentAuthPayload;
 
