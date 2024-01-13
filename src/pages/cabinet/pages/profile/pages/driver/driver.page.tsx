@@ -163,9 +163,11 @@ export const DriverPage = () => {
             />
           </div>
         </div>
-        <div className={`${styles.nextH} ${styles.btn}`}>
-          {!isPaymentInfoAlreadyExist && <ButtonComponent title={'Сохранить настройки оплаты'} onClick={saveState} />}
-        </div>
+        {!isPaymentInfoAlreadyExist && (
+          <div className={`${styles.nextH} ${styles.btn}`}>
+            <ButtonComponent title={'Сохранить настройки оплаты'} onClick={saveState}/>
+          </div>
+        )}
       </div>
       <div className={`${styles.nextH}`}>
         <h3 className={`boldText`}>Автомобили</h3>
