@@ -89,6 +89,11 @@ export const DriverPage = () => {
   }
 
   const saveState = async () => {
+    if (!/^[0-9]{11}$/.test(phoneToTransfer ?? '')) {
+      toast.error('Невалидный номер телефона')
+      return;
+    }
+
     setLoading(true);
     if (!isPaymentInfoAlreadyExist) {
       const phoneValue: string | null = phoneToTransfer;
@@ -145,7 +150,7 @@ export const DriverPage = () => {
           <p className={`${styles.text} regularText`}>Номер для перевода</p>
           <div className={styles.userPropertyValueDiv}>
             <InputComponent onChange={setPhoneToTransfer} isReadonly={isPaymentInfoAlreadyExist} maxLength={11}
-                            defaultText={phoneToTransfer ?? '7'} isNumberOnyl={true}/>
+                            defaultText={phoneToTransfer ?? '7'} isNumberOnyl={true} placeholder={'79999999999'}/>
           </div>
         </div>
         <div className={styles.userPropertyDiv}>
