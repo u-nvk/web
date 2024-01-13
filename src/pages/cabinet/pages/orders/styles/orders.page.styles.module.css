@@ -5,6 +5,10 @@
   padding: 5%;
 }
 
+.filter {
+  margin-top: 15px;
+}
+
 .createOrderBtn {
   min-height: 41px;
   max-height: 61px;

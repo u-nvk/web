@@ -4,7 +4,9 @@
 }
 
 .chip {
-    width: 171px;
+    min-width: 171px;
+    width: 40%;
+    max-width: 300px;
     height: 31px;
     border-radius: 8px;
     border: 1px solid transparent;

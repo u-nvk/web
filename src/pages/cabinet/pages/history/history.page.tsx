@@ -24,11 +24,23 @@ const defaultDirections: IChip[] = [
   }
 ]
 
+const roles: IChip[] = [
+  {
+    id: 'participant',
+    title: 'Я пассажир'
+  },
+  {
+    id: 'driver',
+    title: 'Я водитель'
+  }
+]
+
 export const HistoryPage = () => {
   const accessTokenGetter = useAccessToken();
   const userPidGetter = useIdFromToken();
   const api = useApi();
   const [direction, setDirection] = useState<IChip>(defaultDirections[0]);
+  const [role, setRole] = useState<IChip>(roles[0]);
   const [orders, setOrders] = useState<GetHistoryOrdersResponseDto['list']>([]);
   const [visibleOrders, setVisibleOrders] = useState<Map<string, GetHistoryOrdersResponseDto['list']>>(new Map())
 
@@ -41,6 +53,11 @@ export const HistoryPage = () => {
 
     setDirection(targetDirection);
     sortVisibleList(targetDirection, orders);
+  }
+
+  const handleRoleChange = (id: string) => {
+    setRole(roles.find((chip) => chip.id === id)!);
+    getAllOrders(id as 'driver' | 'participant');
   }
 
   const sortVisibleList = (direction: IChip, list: GetHistoryOrdersResponseDto['list']) => {
@@ -66,25 +83,26 @@ export const HistoryPage = () => {
     setVisibleOrders(resultMap);
   }
 
-  const getAllOrders = async () => {
-    const orders = await api<GetHistoryOrdersResponseDto>(() => getHistoryOrders(accessTokenGetter()));
+  const getAllOrders = async (role: 'driver' | 'participant') => {
+    const orders = await api<GetHistoryOrdersResponseDto>(() => getHistoryOrders(accessTokenGetter(), role));
     setOrders(orders.list);
     sortVisibleList(direction, orders.list);
   }
 
-  // const isUserJoin = (participantIds: string[]) => {
-  //   return participantIds.includes(userPidGetter());
-  // }
-
   const isUserDriver = (driverPid: string) => driverPid === userPidGetter();
 
   useEffect(() => {
-    getAllOrders();
+    getAllOrders(role.id as ('driver' | 'participant'));
   }, []);
 
   return (
     <div className={styles.mainDiv}>
-      <ChipsComponent items={defaultDirections} onItemClick={handleDirectionChange} />
+      <div>
+        <ChipsComponent items={roles} onItemClick={handleRoleChange} />
+      </div>
+      <div className={styles.filter}>
+        <ChipsComponent items={defaultDirections} onItemClick={handleDirectionChange} />
+      </div>
       <div style={{ marginTop: "25px" }}>
         {Array.from(visibleOrders.values()).map((group, externalIndex) => {
           return (
