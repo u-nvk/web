@@ -9,7 +9,10 @@ import RadioButtons, {
   RadioButtonOption,
 } from "../../../../../../components/radioButtons/radioButtons.component";
 import { useAccessToken } from "../../../../../../hooks/utils/use-id-from-token.hook";
-import {getTransports, GetTransportsResponseDto} from "../../../../../../api/get-transports/get-transports.api";
+import {
+  getTransports,
+  GetTransportsResponseDto,
+} from "../../../../../../api/get-transports/get-transports.api";
 import {
   createOrderApi,
   PostCreateOrderRequestDto,
@@ -21,9 +24,9 @@ import { ErrorBannerComponent } from "../../../../../../components/error-banner/
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ru from "date-fns/locale/ru"; // the locale you want
-import {useApi} from "../../../../../../hooks/utils/use-api.hook.ts";
+import { useApi } from "../../../../../../hooks/utils/use-api.hook.ts";
 import toast from "react-hot-toast";
-import {InputComponent} from "../../../../../../components/input/input.component.tsx";
+import { InputComponent } from "../../../../../../components/input/input.component.tsx";
 
 registerLocale("ru", ru); // register it with the name you want
 
@@ -58,9 +61,16 @@ const defaultPlaces: IPlace[] = [
   { value: "D11", label: "Общежитие №11" },
   { value: "G8M", label: "Гринвич со стороны 8 марта" },
   { value: "UGI", label: "УГИ" },
+  { value: "BT", label: "Метро Ботаническая" },
+  { value: "RTF", label: "ИРИТ-РТФ" },
   { value: "RV", label: "ЖД Вокзал" },
-  // { value: "4", label: "Вторчермет" },
-  // { value: "5", label: "Ботаника" },
+  { value: "AR", label: "Екатеринбург-Арена" },
+  { value: "INEU", label: "Корпус ИНЭУ, Гоголя 25" },
+  { value: "IENIM", label: "Корпус ИЕНиМ, Куйбышева 48" },
+  { value: "VZ", label: "ВИЗ" },
+  { value: "UM", label: "Уралмаш" },
+  { value: "YV", label: "Южный автовокзал" },
+  { value: "VTOR", label: "Вторчермет" },
 ];
 
 const customStyles = {
@@ -129,23 +139,23 @@ export const OrdersCreatePage = () => {
 
   const saveOrder = () => {
     if (!price) {
-      toast.error('Укажите стоимость поездки');
+      toast.error("Укажите стоимость поездки");
       return;
     }
 
     if (!selectedTransport?.value) {
-      toast.error('Укажите транспорт');
+      toast.error("Укажите транспорт");
       return;
     }
 
     if (!secondDirection?.value) {
-      toast.error('Укажите направление');
+      toast.error("Укажите направление");
       return;
     }
 
     // 1 мин = 600000 мс
     if (startDate.getTime() <= new Date().getTime() + 600000) {
-      toast.error('Время отправления должно быть минимум через 10 минут');
+      toast.error("Время отправления должно быть минимум через 10 минут");
       return;
     }
 
@@ -155,7 +165,7 @@ export const OrdersCreatePage = () => {
         to: direction.id === toNvkId ? "NVK" : secondDirection?.value,
       },
       price: price,
-      comment: comment ?? '',
+      comment: comment ?? "",
       transportId: selectedTransport?.value,
       startFreeSeatCount: startFreeSeatCount,
       timeStart: startDate.toISOString(),
@@ -167,12 +177,14 @@ export const OrdersCreatePage = () => {
         navigate("/cabinet/orders/" + res.id);
       })
       .catch(() => setErrorAfterCreating(true))
-      .finally(() => setLoading(false))
+      .finally(() => setLoading(false));
   };
 
   const getAllTransports = async () => {
     try {
-      const transports = await api<GetTransportsResponseDto>(() => getTransports(accessTokenGetter()));
+      const transports = await api<GetTransportsResponseDto>(() =>
+        getTransports(accessTokenGetter())
+      );
       setTransports(
         transports.transports.map((t) => {
           return {
@@ -228,9 +240,19 @@ export const OrdersCreatePage = () => {
     <div className={styles.mainDiv}>
       <div className={styles.wrapperBackArrow}>
         <div className={styles.backArrow} onClick={handleBackButtonClick}>
-          <svg className={styles.icon} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6 12H18M6 12L11 7M6 12L11 17" stroke="#000000" strokeWidth="2" strokeLinecap="round"
-                  strokeLinejoin="round"/>
+          <svg
+            className={styles.icon}
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M6 12H18M6 12L11 7M6 12L11 17"
+              stroke="#000000"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </div>
       </div>
@@ -266,7 +288,12 @@ export const OrdersCreatePage = () => {
               Уточнение адреса (если нужно)
             </span>
             <div className={styles.controlDiv}>
-              <InputComponent maxLength={200} isBorder={true} onChange={setComment} isReadonly={false} />
+              <InputComponent
+                maxLength={200}
+                isBorder={true}
+                onChange={setComment}
+                isReadonly={false}
+              />
             </div>
           </div>
           <div className={styles.propertyDiv}>
@@ -324,10 +351,10 @@ export const OrdersCreatePage = () => {
                   minDate={new Date()}
                   showTimeSelect
                   dateFormat="Pp"
-                  style={{backgroundColor: "var(--bg-color)"}}
+                  style={{ backgroundColor: "var(--bg-color)" }}
                   timeIntervals={10}
                   customInput={
-                    <input className={styles.rubleInput} type="text"/>
+                    <input className={styles.rubleInput} type="text" />
                   }
                 />
               </div>
@@ -335,9 +362,7 @@ export const OrdersCreatePage = () => {
           </div>
         </div>
         <div className={styles.wrapperBtn} onClick={saveOrder}>
-          <span className={`regularText ${styles.text}`}>
-            Опубликовать
-          </span>
+          <span className={`regularText ${styles.text}`}>Опубликовать</span>
         </div>
       </div>
     </div>
