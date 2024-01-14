@@ -6,6 +6,7 @@ export interface PostCreateOrderRequestDto {
     to: string;
   };
   price: number;
+  comment: string;
   transportId: string;
   timeStart: string;
   startFreeSeatCount: number;

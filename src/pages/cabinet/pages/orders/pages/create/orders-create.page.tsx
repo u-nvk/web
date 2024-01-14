@@ -23,6 +23,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import ru from "date-fns/locale/ru"; // the locale you want
 import {useApi} from "../../../../../../hooks/utils/use-api.hook.ts";
 import toast from "react-hot-toast";
+import {InputComponent} from "../../../../../../components/input/input.component.tsx";
 
 registerLocale("ru", ru); // register it with the name you want
 
@@ -90,6 +91,7 @@ export const OrdersCreatePage = () => {
     defaultPlaces[0]
   );
   const [transports, setTransports] = useState<ITransport[]>();
+  const [comment, setComment] = useState<string | null>(null);
   const [selectedTransport, setSelectedTransport] =
     useState<ITransport | null>();
   const startFreeSeatCountOptions: RadioButtonOption[] = new Array(6)
@@ -149,6 +151,7 @@ export const OrdersCreatePage = () => {
         to: direction.id === toNvkId ? "NVK" : secondDirection?.value,
       },
       price: price,
+      comment: comment ?? '',
       transportId: selectedTransport?.value,
       startFreeSeatCount: startFreeSeatCount,
       timeStart: startDate.toISOString(),
@@ -255,6 +258,14 @@ export const OrdersCreatePage = () => {
             </div>
           </div>
           <div className={styles.propertyDiv}>
+            <span className={`regularText ${styles.text}`}>
+              Уточнение адреса (если нужно)
+            </span>
+            <div className={styles.controlDiv}>
+              <InputComponent onChange={setComment} isReadonly={false} />
+            </div>
+          </div>
+          <div className={styles.propertyDiv}>
             <span className={`regularText ${styles.text}`}>Транспорт</span>
             <div className={styles.controlDiv}>
               <Select
@@ -309,10 +320,10 @@ export const OrdersCreatePage = () => {
                   minDate={new Date()}
                   showTimeSelect
                   dateFormat="Pp"
-                  style={{ backgroundColor: "var(--bg-color)" }}
+                  style={{backgroundColor: "var(--bg-color)"}}
                   timeIntervals={10}
                   customInput={
-                    <input className={styles.rubleInput} type="text" />
+                    <input className={styles.rubleInput} type="text"/>
                   }
                 />
               </div>

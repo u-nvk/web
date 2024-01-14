@@ -48,6 +48,7 @@ export const OrderViewPage = () => {
   const [isJoined, setIsJoined] = useState<boolean>(false);
   const [paymentNumber, setPaymentNumber] = useState<string | null>(null);
   const [paymentBank, setPaymentBank] = useState<number | null>(null);
+  const [comment, setComment] = useState<null | string>(null)
   const [participants, setParticipants] = useState<
     GetOrderResponseDto["participants"]
   >([]);
@@ -96,6 +97,7 @@ export const OrderViewPage = () => {
     api<GetOrderResponseDto>(() => getOrderApi(accessTokenGetter(), params.id as string))
       .then((data) => {
         setOrder(data);
+        setComment(data.comment);
 
         if (new Date(data.timeStart).getTime() < new Date().getTime()) {
           setIsPassedOrder(true);
@@ -262,6 +264,14 @@ export const OrderViewPage = () => {
                   {order.transport.plateNumber}
                 </div>
               </div>
+              {comment && comment.length &&
+                  <div className={`${styles.contentLine}`}>
+                      <div className={`lightText ${styles.littleText}`}>комментарий</div>
+                      <div className={`mediumText ${styles.infoText}`}>
+                        {comment}
+                      </div>
+                  </div>
+              }
               <div className={`${styles.contentLine}`}>
                 <div className={`lightText ${styles.littleText}`}>банк для перевода</div>
                 <div className={`mediumText ${styles.infoText}`}>
