@@ -266,7 +266,7 @@ export const OrdersCreatePage = () => {
               Уточнение адреса (если нужно)
             </span>
             <div className={styles.controlDiv}>
-              <InputComponent isBorder={true} onChange={setComment} isReadonly={false} />
+              <InputComponent maxLength={200} isBorder={true} onChange={setComment} isReadonly={false} />
             </div>
           </div>
           <div className={styles.propertyDiv}>

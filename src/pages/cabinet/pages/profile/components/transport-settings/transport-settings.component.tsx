@@ -68,14 +68,14 @@ export const TransportSettingsComponent: FC<ITransportSettings> = ({ isAlreadyEx
           <p className={`${styles.text} regularText`}>Марка и модель</p>
           <div className={styles.userPropertyValueDiv}>
             <InputComponent onChange={onTransportSettingsChange.bind(this, 'name')} isReadonly={isAlreadyExist}
-                            defaultText={transport.name ?? ''} isNumberOnyl={false}/>
+                            defaultText={transport.name ?? ''} maxLength={40} isNumberOnyl={false}/>
           </div>
         </div>
         <div className={styles.userPropertyDiv}>
           <p className={`${styles.text} regularText`}>Цвет</p>
           <div className={styles.userPropertyValueDiv}>
             <InputComponent onChange={onTransportSettingsChange.bind(this, 'color')} isReadonly={isAlreadyExist}
-                            defaultText={transport.color ?? ''} isNumberOnyl={false}/>
+                            defaultText={transport.color ?? ''} isNumberOnyl={false} maxLength={20}/>
           </div>
         </div>
         <div className={styles.userPropertyDiv}>

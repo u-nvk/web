@@ -259,6 +259,14 @@ export const OrderViewPage = () => {
                 </div>
               </div>
               <div className={`${styles.contentLine}`}>
+                <div className={`lightText ${styles.littleText}`}>
+                  цвет
+                </div>
+                <div className={`mediumText ${styles.infoText}`}>
+                  {order.transport.color}
+                </div>
+              </div>
+              <div className={`${styles.contentLine}`}>
                 <div className={`lightText ${styles.littleText}`}>номер транспортного средства</div>
                 <div className={`mediumText ${styles.infoText}`}>
                   {order.transport.plateNumber}
