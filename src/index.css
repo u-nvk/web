@@ -126,8 +126,76 @@ table {
 }
 
 :root {
-  --main-bg-color: #f3f2f8;
+  --main-bg-color: #F3F2F8;
+  --bg-color: #FFFFFF;
   --text-color: #000000;
+  --text-color-disabled: #3b3b3b;
+  --accent-color: #DCEDFF;
+  --accent-border-color: #9FCAFF;
+  --error-color: #e8002c;
+  --warning-color: #fff2a1;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --main-bg-color: #000000;
+    --text-color: #f3f2f8;
+    --text-color-disabled: #a2a2a2;
+    --bg-color: #252525;
+    --accent-color: #3070c2;
+    --accent-border-color: #0c387a;
+    --error-color: #e8002c;
+    --warning-color: #b49c02;
+  }
+}
+
+.react-datepicker__header {
+  text-align: center;
+  background-color: var(--bg-color);
+  border-bottom: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  padding-top: 8px;
+  position: relative;
+}
+
+.react-datepicker__time-list-item {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.react-datepicker__day--keyboard-selected, .react-datepicker__month-text--keyboard-selected, .react-datepicker__quarter-text--keyboard-selected, .react-datepicker__year-text--keyboard-selected {
+  background-color: var(--accent-color);
+}
+
+.react-datepicker__day {
+  color: var(--text-color);
+}
+
+.react-datepicker__day--disabled {
+  color: var(--text-color-disabled);
+}
+
+.react-datepicker__current-month, .react-datepicker-time__header, .react-datepicker-year-header {
+  color: var(--text-color);
+}
+
+.react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name {
+  color: var(--text-color);
+}
+
+.react-datepicker__today-button {
+  background-color: var(--bg-color);
+  border-top: 0px;
+  cursor: pointer;
+  text-align: center;
+  font-weight: bold;
+  padding: 5px 0;
+  clear: left;
+}
+
+.react-datepicker {
+  background-color: var(--bg-color);
 }
 
 @font-face {
@@ -170,6 +238,7 @@ table {
   font-style: normal;
   line-height: normal;
   font-family: "InterMedium";
+  color: var(--text-color);
 }
 
 .regularText {
@@ -177,6 +246,7 @@ table {
   font-style: normal;
   line-height: normal;
   font-family: "InterRegular";
+  color: var(--text-color);
 }
 
 .lightText {
@@ -184,6 +254,7 @@ table {
   font-style: normal;
   line-height: normal;
   font-family: "InterLight";
+  color: var(--text-color);
 }
 
 .boldText {
@@ -191,6 +262,7 @@ table {
   font-family: "InterBold";
   font-style: normal;
   line-height: normal;
+  color: var(--text-color);
 }
 
 .text12 {

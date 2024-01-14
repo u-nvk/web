@@ -17,12 +17,12 @@
 
 .activeWrapper {
     border: 1px solid #9fcaff;
-    background: #dcedff;
+    background: var(--bg-color);
 }
 
 .inActiveWrapper {
     border-radius: 8px;
-    background-color: white;
+    background-color: var(--bg-color);
 }
 
 .activeText {

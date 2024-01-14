@@ -44,6 +44,16 @@ const customStyles = {
   control: (provided: any) => ({
     ...provided,
     borderRadius: "10px",
+    backgroundColor: "var(--bg-color)",
+  }),
+  singleValue: (provided: any) => ({
+    ...provided,
+    color: "var(--text-color)",
+  }),
+  option: (provided: any) => ({
+    ...provided,
+    color: "var(--text-color)",
+    backgroundColor: "var(--bg-color)",
   }),
 };
 
@@ -82,7 +92,6 @@ export const DriverPage = () => {
         })
     ])
       .catch((e) => {
-        console.log(e);
         setError(true);
       })
       .finally(() => setLoading(false))
@@ -109,7 +118,6 @@ export const DriverPage = () => {
           isDriver: true,
         }))
       } catch (e) {
-        console.log(e);
         setLoading(false);
         setError(true);
       }

@@ -9,6 +9,11 @@
 
 .backArrow {
   width: 30px;
+  height: 30px;
+}
+
+.icon path {
+  stroke: var(--text-color);
 }
 
 .wrapperBackArrow {
@@ -16,7 +21,7 @@
 }
 
 .wrapperContent {
-  background-color: white;
+  background-color: var(--bg-color);
   width: 90.8%;
   border-radius: 8px;
   display: flex;
@@ -85,16 +90,16 @@
 }
 
 .wrapperBtnNotJoined {
-  background-color: #dcedff;
-  border: #9fcaff 1px solid;
+  background-color: var(--bg-color);
+  border: var(--accent-color) 1px solid;
 }
 
 .wrapperBtnError {
-  background-color: #e8002c;
+  background-color: var(--error-color);
 }
 
 .wrapperBtnJoined {
-  background-color: #fff2a1;
+  background-color: var(--warning-color);
 }
 
 .text {

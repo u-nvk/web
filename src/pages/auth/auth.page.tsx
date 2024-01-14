@@ -24,7 +24,6 @@ const registerVkAuth = (
   const oneTapButton = Connect.buttonOneTapAuth({
     // Обязательный параметр в который нужно добавить обработчик событий приходящих из SDK
     callback: function (e) {
-      console.log(e);
 
       const type = e.type;
 

@@ -67,6 +67,16 @@ const customStyles = {
   control: (provided: any) => ({
     ...provided,
     borderRadius: "10px",
+    backgroundColor: "var(--bg-color)",
+  }),
+  singleValue: (provided: any) => ({
+    ...provided,
+    color: "var(--text-color)",
+  }),
+  option: (provided: any) => ({
+    ...provided,
+    color: "var(--text-color)",
+    backgroundColor: "var(--bg-color)",
   }),
 };
 
@@ -300,6 +310,7 @@ export const OrdersCreatePage = () => {
                   minDate={new Date()}
                   showTimeSelect
                   dateFormat="Pp"
+                  style={{ backgroundColor: "var(--bg-color)" }}
                   timeIntervals={10}
                   customInput={
                     <input className={styles.rubleInput} type="text" />
