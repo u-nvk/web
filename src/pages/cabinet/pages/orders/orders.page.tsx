@@ -36,7 +36,7 @@ export const OrdersPage = () => {
   const [orders, setOrders] = useState<GetOrdersResponseDto['orders']>([]);
   const [visibleOrders, setVisibleOrders] = useState<Map<string, GetOrdersResponseDto['orders']>>(new Map())
   const [isDriver, setIsDriver] = useState(false);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
 
   const handleDirectionChange = (id: string) => {
     const targetDirection: IChip | undefined = defaultDirections.find((dir) => dir.id === id);
