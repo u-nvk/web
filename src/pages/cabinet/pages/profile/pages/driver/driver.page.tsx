@@ -143,11 +143,11 @@ export const DriverPage = () => {
   }
 
   if (isLoading) {
-    return <div><LoaderComponent /></div>
+    return <div className={styles.loader}><LoaderComponent /></div>
   }
 
   if (isError) {
-    return <div><ErrorBannerComponent /></div>
+    return <div className={styles.loader}><ErrorBannerComponent /></div>
   }
 
   return (
