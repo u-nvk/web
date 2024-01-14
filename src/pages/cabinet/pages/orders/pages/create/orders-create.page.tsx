@@ -21,7 +21,6 @@ import { ErrorBannerComponent } from "../../../../../../components/error-banner/
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ru from "date-fns/locale/ru"; // the locale you want
-import backArrow from "/icons/back.svg?url";
 import {useApi} from "../../../../../../hooks/utils/use-api.hook.ts";
 import toast from "react-hot-toast";
 
