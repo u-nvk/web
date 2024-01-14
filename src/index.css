@@ -132,8 +132,7 @@ table {
 
 @font-face {
   font-family: "InterBold";
-  src: local("InterBold"),
-    url("/fonts/Inter/Inter-Bold.ttf") format("truetype");
+  src: local("InterBold"), url("/fonts/Inter/Inter-Bold.ttf") format("truetype");
   font-weight: bold;
 }
 
@@ -195,4 +194,24 @@ table {
 
 .text12 {
   font-size: 12px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background-color: #f5f5f5; /* Цвет фона скроллбара */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: #c0c0c0; /* Цвет ползунка */
+  border-radius: 10px; /* Скругляем углы ползунка */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

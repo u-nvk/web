@@ -9,7 +9,10 @@ import RadioButtons, {
   RadioButtonOption,
 } from "../../../../../../components/radioButtons/radioButtons.component";
 import { useAccessToken } from "../../../../../../hooks/utils/use-id-from-token.hook";
-import {getTransports, GetTransportsResponseDto} from "../../../../../../api/get-transports/get-transports.api";
+import {
+  getTransports,
+  GetTransportsResponseDto,
+} from "../../../../../../api/get-transports/get-transports.api";
 import {
   createOrderApi,
   PostCreateOrderRequestDto,
@@ -22,7 +25,7 @@ import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ru from "date-fns/locale/ru"; // the locale you want
 import backArrow from "/icons/back.svg?url";
-import {useApi} from "../../../../../../hooks/utils/use-api.hook.ts";
+import { useApi } from "../../../../../../hooks/utils/use-api.hook.ts";
 import toast from "react-hot-toast";
 
 registerLocale("ru", ru); // register it with the name you want
@@ -59,6 +62,11 @@ const defaultPlaces: IPlace[] = [
   { value: "G8M", label: "Гринвич со стороны 8 марта" },
   { value: "UGI", label: "УГИ" },
   { value: "RV", label: "ЖД Вокзал" },
+  { value: "AR", label: "Екатеринбург-Арена" },
+  { value: "VZ", label: "ВИЗ" },
+  { value: "BT", label: "Метро Ботаническая" },
+  { value: "UM", label: "Уралмаш" },
+  { value: "YV", label: "Южный автовокзал" },
   // { value: "4", label: "Вторчермет" },
   // { value: "5", label: "Ботаника" },
 ];
@@ -114,23 +122,23 @@ export const OrdersCreatePage = () => {
 
   const saveOrder = () => {
     if (!price) {
-      toast.error('Укажите стоимость поездки');
+      toast.error("Укажите стоимость поездки");
       return;
     }
 
     if (!selectedTransport?.value) {
-      toast.error('Укажите транспорт');
+      toast.error("Укажите транспорт");
       return;
     }
 
     if (!secondDirection?.value) {
-      toast.error('Укажите направление');
+      toast.error("Укажите направление");
       return;
     }
 
     // 1 мин = 600000 мс
     if (startDate.getTime() <= new Date().getTime() + 600000) {
-      toast.error('Время отправления должно быть минимум через 10 минут');
+      toast.error("Время отправления должно быть минимум через 10 минут");
       return;
     }
 
@@ -151,12 +159,14 @@ export const OrdersCreatePage = () => {
         navigate("/cabinet/orders/" + res.id);
       })
       .catch(() => setErrorAfterCreating(true))
-      .finally(() => setLoading(false))
+      .finally(() => setLoading(false));
   };
 
   const getAllTransports = async () => {
     try {
-      const transports = await api<GetTransportsResponseDto>(() => getTransports(accessTokenGetter()));
+      const transports = await api<GetTransportsResponseDto>(() =>
+        getTransports(accessTokenGetter())
+      );
       setTransports(
         transports.transports.map((t) => {
           return {
@@ -310,9 +320,7 @@ export const OrdersCreatePage = () => {
           </div>
         </div>
         <div className={styles.wrapperBtn} onClick={saveOrder}>
-          <span className={`regularText ${styles.text}`}>
-            Опубликовать
-          </span>
+          <span className={`regularText ${styles.text}`}>Опубликовать</span>
         </div>
       </div>
     </div>
