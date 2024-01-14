@@ -8,9 +8,10 @@ export interface InputComponentProps {
   maxLength?: number;
   isNumberOnyl?: boolean
   placeholder?: string;
+  isBorder?: boolean;
 }
 
-export const InputComponent: FC<InputComponentProps> = ({ defaultText, onChange, isReadonly, maxLength, isNumberOnyl, placeholder }) => {
+export const InputComponent: FC<InputComponentProps> = ({ defaultText, onChange, isReadonly, maxLength, isNumberOnyl, placeholder, isBorder= false }) => {
   const [currentText, setCurrentText] = useState('');
 
   const handleValue = (value: string) => {
@@ -29,7 +30,7 @@ export const InputComponent: FC<InputComponentProps> = ({ defaultText, onChange,
   }, []);
 
   return (
-    <div className={`${styles.wrapper}`}>
+    <div className={`${styles.wrapper} ${isBorder ? styles.border : ''}`}>
       {!isNumberOnyl && <input readOnly={isReadonly} value={currentText} placeholder={placeholder ?? ''} onChange={(e) => handleValue(e.target.value)} maxLength={maxLength} className={`${styles.input} regularText`} type={isNumberOnyl ? 'number' : 'text'}/>}
       {isNumberOnyl && <input readOnly={isReadonly} value={currentText} placeholder={placeholder ?? ''} onChange={(e) => handleValue(e.target.value)}
                               className={`${styles.input} regularText`}

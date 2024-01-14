@@ -69,6 +69,10 @@ const customStyles = {
     borderRadius: "10px",
     backgroundColor: "var(--bg-color)",
   }),
+  menu: (provided: any) => ({
+    ...provided,
+    backgroundColor: "var(--bg-color)",
+  }),
   singleValue: (provided: any) => ({
     ...provided,
     color: "var(--text-color)",
@@ -262,7 +266,7 @@ export const OrdersCreatePage = () => {
               Уточнение адреса (если нужно)
             </span>
             <div className={styles.controlDiv}>
-              <InputComponent onChange={setComment} isReadonly={false} />
+              <InputComponent isBorder={true} onChange={setComment} isReadonly={false} />
             </div>
           </div>
           <div className={styles.propertyDiv}>

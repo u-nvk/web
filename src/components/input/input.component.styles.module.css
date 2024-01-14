@@ -8,6 +8,10 @@
     justify-content: center;
 }
 
+.border {
+    border: 1px solid var(--text-color);
+}
+
 .input {
     margin-left: 5%;
     border: none;
