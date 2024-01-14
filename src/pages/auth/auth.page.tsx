@@ -139,7 +139,7 @@ export const AuthPage = () => {
   }, []);
 
   if (isValidProfileData(profileContext.data?.())) {
-    return <Navigate to={"/cabinet/profile"} replace />;
+    return <Navigate to={"/cabinet/orders"} replace />;
   }
 
   return (

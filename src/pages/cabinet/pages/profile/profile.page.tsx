@@ -38,7 +38,9 @@ export const ProfilePage = () => {
   }, []);
 
   if (isLoading) {
-    return <LoaderComponent />
+    return <div className={styles.loader}>
+      <LoaderComponent />
+    </div>
   }
 
   return (

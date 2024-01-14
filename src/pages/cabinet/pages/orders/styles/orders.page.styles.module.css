@@ -5,6 +5,13 @@
   padding: 5%;
 }
 
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90%;
+}
+
 .filter {
   margin-top: 15px;
 }

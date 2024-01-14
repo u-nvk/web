@@ -270,7 +270,7 @@ export const OrderViewPage = () => {
                   {translateBankPipe(paymentBank)}
                 </div>
               </div>
-              <div className={`${styles.contentLine}`} onClick={() => copyToClipboard(paymentNumber ?? '')}>
+              <div className={`${styles.contentLine}`} onClick={() => copyToClipboard(`+${paymentNumber}` ?? '')}>
                 <div className={`lightText ${styles.littleText}`}>номер для перевода</div>
                 <div className={`mediumText ${styles.infoText}`}>
                   {paymentNumber}

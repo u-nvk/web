@@ -5,6 +5,14 @@
   padding: 5%;
 }
 
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
 .inputs {
   height: 60%;
   display: flex;
