@@ -37,7 +37,7 @@ export const CabinetLayout = () => {
         <Link to={"history"} className={styles.barElement}>
           <>
             <svg className={`${styles.icon} ${styles.time}`} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="12" cy="12" r="11" stroke="black" stroke-width="2"/>
+              <circle cx="12" cy="12" r="11" stroke="black" strokeWidth="2"/>
               <path d="M11 6C11 5.44772 11.4477 5 12 5C12.5523 5 13 5.44772 13 6V15H11V6Z" fill="black"/>
               <path
                 d="M16.664 16.6819C17.118 17.0288 17.1927 17.6834 16.8286 18.1237C16.4878 18.5359 15.8842 18.6097 15.4541 18.2918L11 15L12.5 13.5L16.664 16.6819Z"
