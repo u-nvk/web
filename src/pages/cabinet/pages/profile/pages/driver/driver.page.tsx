@@ -91,7 +91,7 @@ export const DriverPage = () => {
           setTransports(value.transports);
         })
     ])
-      .catch((e) => {
+      .catch(()  => {
         setError(true);
       })
       .finally(() => setLoading(false))

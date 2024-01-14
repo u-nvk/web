@@ -29,6 +29,11 @@
 
 .backArrow {
   width: 30px;
+  height: 30px;
+}
+
+.icon path {
+  stroke: var(--text-color);
 }
 
 .wrapperBackArrow {

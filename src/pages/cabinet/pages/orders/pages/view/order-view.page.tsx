@@ -1,6 +1,5 @@
 import styles from "./styles/order-view.page.module.css";
 import vkIcon from "/icons/VK.svg?url";
-import backArrow from "/icons/back.svg?url";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
