@@ -239,7 +239,10 @@ export const DriverPage = () => {
             <div className={`${styles.nextH} ${styles.btn}`}>
               <ButtonComponent
                 title={"Добавить"}
-                onClick={createNewTransport}
+                onClick={() => {
+                  ym(96148686, "reachGoal", "btn-driversInfo-add"),
+                    createNewTransport();
+                }}
               />
             </div>
           )}
