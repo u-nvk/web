@@ -24,7 +24,6 @@ const registerVkAuth = (
   const oneTapButton = Connect.buttonOneTapAuth({
     // Обязательный параметр в который нужно добавить обработчик событий приходящих из SDK
     callback: function (e) {
-      console.log(e);
 
       const type = e.type;
 
@@ -34,8 +33,6 @@ const registerVkAuth = (
 
       switch (type) {
         case ConnectEvents.OneTapAuthEventsSDK.LOGIN_SUCCESS: // = 'VKSDKOneTapAuthLoginSuccess'
-          console.log(e);
-
           // eslint-disable-next-line no-case-declarations
           const payload: VKSilentAuthPayload = e.payload as VKSilentAuthPayload;
 
@@ -141,7 +138,7 @@ export const AuthPage = () => {
   }, []);
 
   if (isValidProfileData(profileContext.data?.())) {
-    return <Navigate to={"/cabinet/profile"} replace />;
+    return <Navigate to={"/cabinet/orders"} replace />;
   }
 
   return (

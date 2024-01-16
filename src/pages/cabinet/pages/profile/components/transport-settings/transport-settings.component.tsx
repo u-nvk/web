@@ -15,7 +15,7 @@ export interface ITransportSettings {
   originTransport?: GetTransportsItemResponseDto;
 }
 
-const regexp = /^([АВЕКМНОРСТУХ][0-9]{3}[АВЕКМНОРСТУХ]{2}[0-9]{2,3})?$/gm;
+const regexp = /^[АВЕКМНОРСТУХ]\d{3}(?<!000)[АВЕКМНОРСТУХ]{2}\d{2,3}$/ui;
 
 export const TransportSettingsComponent: FC<ITransportSettings> = ({ isAlreadyExist, onDelete, onSave, originTransport }) => {
   const [transport, setTransport] = useState<Partial<GetTransportsItemResponseDto>>(originTransport ?? {})
@@ -68,14 +68,14 @@ export const TransportSettingsComponent: FC<ITransportSettings> = ({ isAlreadyEx
           <p className={`${styles.text} regularText`}>Марка и модель</p>
           <div className={styles.userPropertyValueDiv}>
             <InputComponent onChange={onTransportSettingsChange.bind(this, 'name')} isReadonly={isAlreadyExist}
-                            defaultText={transport.name ?? ''} isNumberOnyl={false}/>
+                            defaultText={transport.name ?? ''} maxLength={40} isNumberOnyl={false}/>
           </div>
         </div>
         <div className={styles.userPropertyDiv}>
           <p className={`${styles.text} regularText`}>Цвет</p>
           <div className={styles.userPropertyValueDiv}>
             <InputComponent onChange={onTransportSettingsChange.bind(this, 'color')} isReadonly={isAlreadyExist}
-                            defaultText={transport.color ?? ''} isNumberOnyl={false}/>
+                            defaultText={transport.color ?? ''} isNumberOnyl={false} maxLength={20}/>
           </div>
         </div>
         <div className={styles.userPropertyDiv}>

@@ -24,9 +24,9 @@ import { ErrorBannerComponent } from "../../../../../../components/error-banner/
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ru from "date-fns/locale/ru"; // the locale you want
-import backArrow from "/icons/back.svg?url";
 import { useApi } from "../../../../../../hooks/utils/use-api.hook.ts";
 import toast from "react-hot-toast";
+import { InputComponent } from "../../../../../../components/input/input.component.tsx";
 
 registerLocale("ru", ru); // register it with the name you want
 
@@ -58,25 +58,39 @@ const defaultDirections: CustomChip[] = [
 
 const defaultPlaces: IPlace[] = [
   { value: "MUB", label: "ГУК" },
+  { value: "D11", label: "Общежитие №11" },
   { value: "G8M", label: "Гринвич со стороны 8 марта" },
   { value: "UGI", label: "УГИ" },
   { value: "BT", label: "Метро Ботаническая" },
   { value: "RTF", label: "ИРИТ-РТФ" },
-  { value: "D11", label: "Общежитие №11" },
   { value: "RV", label: "ЖД Вокзал" },
   { value: "AR", label: "Екатеринбург-Арена" },
-  { value: "INEU", label: "Корпус ИНЭУ, Гоголя 25"},
-  { value: "IENIM", label: "Корпус ИЕНиМ, Куйбышева 48"},
+  { value: "INEU", label: "Корпус ИНЭУ, Гоголя 25" },
+  { value: "IENIM", label: "Корпус ИЕНиМ, Куйбышева 48" },
   { value: "VZ", label: "ВИЗ" },
   { value: "UM", label: "Уралмаш" },
   { value: "YV", label: "Южный автовокзал" },
-  { value: "VTOR", label: "Вторчермет"}
+  { value: "VTOR", label: "Вторчермет" },
 ];
 
 const customStyles = {
   control: (provided: any) => ({
     ...provided,
     borderRadius: "10px",
+    backgroundColor: "var(--bg-color)",
+  }),
+  menu: (provided: any) => ({
+    ...provided,
+    backgroundColor: "var(--bg-color)",
+  }),
+  singleValue: (provided: any) => ({
+    ...provided,
+    color: "var(--text-color)",
+  }),
+  option: (provided: any) => ({
+    ...provided,
+    color: "var(--text-color)",
+    backgroundColor: "var(--bg-color)",
   }),
 };
 
@@ -91,6 +105,7 @@ export const OrdersCreatePage = () => {
     defaultPlaces[0]
   );
   const [transports, setTransports] = useState<ITransport[]>();
+  const [comment, setComment] = useState<string | null>(null);
   const [selectedTransport, setSelectedTransport] =
     useState<ITransport | null>();
   const startFreeSeatCountOptions: RadioButtonOption[] = new Array(6)
@@ -150,6 +165,7 @@ export const OrdersCreatePage = () => {
         to: direction.id === toNvkId ? "NVK" : secondDirection?.value,
       },
       price: price,
+      comment: comment ?? "",
       transportId: selectedTransport?.value,
       startFreeSeatCount: startFreeSeatCount,
       timeStart: startDate.toISOString(),
@@ -223,12 +239,22 @@ export const OrdersCreatePage = () => {
   return (
     <div className={styles.mainDiv}>
       <div className={styles.wrapperBackArrow}>
-        <img
-          src={backArrow}
-          className={styles.backArrow}
-          onClick={handleBackButtonClick}
-          alt={"Назад"}
-        />
+        <div className={styles.backArrow} onClick={handleBackButtonClick}>
+          <svg
+            className={styles.icon}
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M6 12H18M6 12L11 7M6 12L11 17"
+              stroke="#000000"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
       </div>
       <div className={styles.infoAndButtonDiv}>
         <div>
@@ -254,6 +280,19 @@ export const OrdersCreatePage = () => {
                 className="regularText"
                 onChange={setSecondDirection}
                 isSearchable={false}
+              />
+            </div>
+          </div>
+          <div className={styles.propertyDiv}>
+            <span className={`regularText ${styles.text}`}>
+              Уточнение адреса (если нужно)
+            </span>
+            <div className={styles.controlDiv}>
+              <InputComponent
+                maxLength={200}
+                isBorder={true}
+                onChange={setComment}
+                isReadonly={false}
               />
             </div>
           </div>
@@ -312,6 +351,7 @@ export const OrdersCreatePage = () => {
                   minDate={new Date()}
                   showTimeSelect
                   dateFormat="Pp"
+                  style={{ backgroundColor: "var(--bg-color)" }}
                   timeIntervals={10}
                   customInput={
                     <input className={styles.rubleInput} type="text" />

@@ -5,6 +5,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #dcedff;
-    border: #9fcaff 1px solid;
+    background-color: var(--accent-color);
+    border: var(--accent-border-color) 1px solid;
+    color: var(--text-color);
 }

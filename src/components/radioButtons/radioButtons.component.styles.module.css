@@ -3,7 +3,7 @@
   height: 30px;
   border-radius: 8px;
   border: 2px solid white;
-  background-color: white;
+  background-color: var(--bg-color);
   text-align: center;
   margin: 8px 8px 0 8px;
   display: inline-flex;
@@ -12,6 +12,6 @@
 }
 
 .activeLabelStyle {
-  border: 2px solid #9fcaff;
-  background-color: #dcedff;
+  border: 2px solid var(--accent-color);
+  background-color: var(--bg-color);
 }

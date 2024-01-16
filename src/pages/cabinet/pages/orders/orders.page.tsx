@@ -14,6 +14,7 @@ import {
 } from "../../../../api/get-own-profile-data/get-own-profile-data.api.ts";
 import {ButtonComponent} from "../../../../components/button/button.component.tsx";
 import {useApi} from "../../../../hooks/utils/use-api.hook.ts";
+import {LoaderComponent} from "../../../../components/loader/loader.component.tsx";
 
 const defaultDirections: IChip[] = [
   {
@@ -35,6 +36,7 @@ export const OrdersPage = () => {
   const [orders, setOrders] = useState<GetOrdersResponseDto['orders']>([]);
   const [visibleOrders, setVisibleOrders] = useState<Map<string, GetOrdersResponseDto['orders']>>(new Map())
   const [isDriver, setIsDriver] = useState(false);
+  const [isLoading, setLoading] = useState(true);
 
   const handleDirectionChange = (id: string) => {
     const targetDirection: IChip | undefined = defaultDirections.find((dir) => dir.id === id);
@@ -54,7 +56,7 @@ export const OrdersPage = () => {
       } else {
         return order.route.from === 'NVK';
       }
-    }).filter((item) => item.leftCount > 0)
+    }).filter((item) => item.leftCount > 0 || isUserJoin(item.participantIds) || isUserDriver(item.driverPid))
 
     const resultMap: Map<string, GetOrdersResponseDto['orders']> = new Map();
 
@@ -74,6 +76,7 @@ export const OrdersPage = () => {
     const orders = await api<GetOrdersResponseDto>(() => getOrders(accessTokenGetter()));
     setOrders(orders.orders);
     sortVisibleList(direction, orders.orders);
+    setLoading(false);
   }
 
   const isUserJoin = (participantIds: string[]) => {
@@ -87,10 +90,17 @@ export const OrdersPage = () => {
   }
 
   useEffect(() => {
+    setLoading(true)
     getAllOrders();
     api<GetProfileDataResponseDto>(() => getOwnProfileDataApi(accessTokenGetter()))
       .then((res) => setIsDriver(res.isDriver))
   }, []);
+
+  if (isLoading) {
+    return <div className={styles.loader}>
+      <LoaderComponent />
+    </div>
+  }
 
   return (
     <div className={styles.mainDiv}>

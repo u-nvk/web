@@ -12,9 +12,9 @@ export const useApi = () => {
     } catch (e) {
       if (e instanceof UnauthError) {
         logout();
+      } else {
+        toast.error('Произошла ошибка, попробуйте позже');
       }
-
-      toast.error('Произошла ошибка, попробуйте позже');
 
       throw e;
     }

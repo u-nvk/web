@@ -4,6 +4,7 @@ export interface GetOrderResponseDto {
   id: string;
   driverPid: string;
   price: number;
+  comment: string;
   route: {
     from: string;
     to: string;

@@ -8,7 +8,7 @@ export const useLogout = () => {
 
   return () => {
     localStorage.clear();
-    profileContext.setData
+    profileContext.clear();
     navigate('/auth');
   }
 }

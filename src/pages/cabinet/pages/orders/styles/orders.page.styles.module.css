@@ -5,6 +5,17 @@
   padding: 5%;
 }
 
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90%;
+}
+
+.filter {
+  margin-top: 15px;
+}
+
 .createOrderBtn {
   min-height: 41px;
   max-height: 61px;
@@ -26,20 +37,9 @@
   margin-bottom: 10px;
 }
 
-.oneButton {
-  border-style: none;
-  width: 48%;
-  border-radius: 8px;
-  background-color: white;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-
 .oneActiveButton {
   border: 1px solid #9fcaff;
-  background: #dcedff;
+  background: var(--bg-color);
   width: 48%;
   border-radius: 8px;
   display: flex;
@@ -50,15 +50,6 @@
 
 .oneActiveButtonText {
   color: #0266d6;
-  font-family: "Inter", sans-serif;
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-}
-
-.oneButtonText {
-  color: black;
   font-family: "Inter", sans-serif;
   font-size: 13px;
   font-style: normal;

@@ -49,6 +49,16 @@ const customStyles = {
   control: (provided: any) => ({
     ...provided,
     borderRadius: "10px",
+    backgroundColor: "var(--bg-color)",
+  }),
+  singleValue: (provided: any) => ({
+    ...provided,
+    color: "var(--text-color)",
+  }),
+  option: (provided: any) => ({
+    ...provided,
+    color: "var(--text-color)",
+    backgroundColor: "var(--bg-color)",
   }),
 };
 
@@ -93,14 +103,18 @@ export const DriverPage = () => {
         setTransports(value.transports);
       }),
     ])
-      .catch((e) => {
-        console.log(e);
+      .catch(() => {
         setError(true);
       })
       .finally(() => setLoading(false));
   };
 
   const saveState = async () => {
+    if (!/^[0-9]{11}$/.test(phoneToTransfer ?? "")) {
+      toast.error("Невалидный номер телефона");
+      return;
+    }
+
     setLoading(true);
     if (!isPaymentInfoAlreadyExist) {
       const phoneValue: string | null = phoneToTransfer;
@@ -118,7 +132,6 @@ export const DriverPage = () => {
           })
         );
       } catch (e) {
-        console.log(e);
         setLoading(false);
         setError(true);
       }
@@ -147,7 +160,7 @@ export const DriverPage = () => {
 
   if (isLoading) {
     return (
-      <div>
+      <div className={styles.loader}>
         <LoaderComponent />
       </div>
     );
@@ -155,7 +168,7 @@ export const DriverPage = () => {
 
   if (isError) {
     return (
-      <div>
+      <div className={styles.loader}>
         <ErrorBannerComponent />
       </div>
     );
@@ -174,6 +187,7 @@ export const DriverPage = () => {
               maxLength={11}
               defaultText={phoneToTransfer ?? "7"}
               isNumberOnyl={true}
+              placeholder={"79999999999"}
             />
           </div>
         </div>
@@ -193,10 +207,12 @@ export const DriverPage = () => {
           </div>
         </div>
         {!isPaymentInfoAlreadyExist && (
-          <ButtonComponent
-            title={"Сохранить настройки оплаты"}
-            onClick={saveState}
-          />
+          <div className={`${styles.nextH} ${styles.btn}`}>
+            <ButtonComponent
+              title={"Сохранить настройки оплаты"}
+              onClick={saveState}
+            />
+          </div>
         )}
       </div>
       <div className={`${styles.nextH}`}>

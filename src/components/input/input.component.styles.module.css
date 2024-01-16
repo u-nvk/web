@@ -2,15 +2,20 @@
     width: 100%;
     height: 40px;
     border-radius: 10px;
-    background-color: white;
+    background-color: var(--bg-color);
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
+.border {
+    border: 1px solid var(--text-color);
+}
+
 .input {
-    margin-left: 5%;
+    margin-left: 15px;
     border: none;
+    background: none;
 }
 
 .input:focus {
