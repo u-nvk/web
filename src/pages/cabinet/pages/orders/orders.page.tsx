@@ -146,10 +146,14 @@ export const OrdersPage = () => {
         >
           <ButtonComponent
             title={"Добавить"}
-            onClick={() => (
-              ym(96148686, "reachGoal", "btn-orders-create-view"),
+            onClick={() => {
+              //@ts-ignore
+              if (ym) {
+                //@ts-ignore
+                ym(96148686, "reachGoal", "btn-orders-create-view");
+              }
               navigateToCreateOrder()
-            )}
+            }}
           />
         </div>
       )}

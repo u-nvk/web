@@ -348,7 +348,12 @@ export const OrdersCreatePage = () => {
         <div
           className={styles.wrapperBtn}
           onClick={() => {
-            ym(96148686, "reachGoal", "btn-orders-create"), saveOrder();
+            //@ts-ignore
+            if (ym) {
+              //@ts-ignore
+              ym(96148686, "reachGoal", "btn-orders-create");
+            }
+            saveOrder();
           }}
         >
           <span className={`regularText ${styles.text}`}>Опубликовать</span>

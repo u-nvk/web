@@ -240,8 +240,12 @@ export const DriverPage = () => {
               <ButtonComponent
                 title={"Добавить"}
                 onClick={() => {
-                  ym(96148686, "reachGoal", "btn-driversInfo-add"),
-                    createNewTransport();
+                  //@ts-ignore
+                  if (ym) {
+                    //@ts-ignore
+                    ym(96148686, "reachGoal", "btn-driversInfo-add");
+                  }
+                  createNewTransport();
                 }}
               />
             </div>
