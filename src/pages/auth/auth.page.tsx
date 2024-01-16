@@ -12,6 +12,7 @@ import {
   ProfileDataContext,
 } from "../../context/profile-data.context";
 import styles from "./styles/auth.page.styles.module.css";
+import {LoaderComponent} from "../../components/loader/loader.component.tsx";
 
 const registerVkAuth = (
   placeToInsertFrame: HTMLDivElement,
@@ -143,7 +144,17 @@ export const AuthPage = () => {
 
   return (
     <div className={styles.container}>
-      {isLoading && <div>Loading</div>}
+      <div className={styles.logo}>
+        <svg width="124" height="44" viewBox="0 0 124 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M36.1634 0.363635V44H29.1321L8.57102 14.277H8.20881V44H0.303977V0.363635H7.37784L27.9176 30.108H28.3011V0.363635H36.1634ZM88.1946 44V0.363635H96.0994V20.4134H96.6321L113.656 0.363635H123.308L106.433 19.9446L123.457 44H113.955L100.936 25.2926L96.0994 31.0028V44H88.1946Z"
+            className={styles.logoFill}/>
+          <path
+            d="M50.6147 0.363635L61.9712 34.7102H62.4187L73.7539 0.363635H82.4471L67.0636 44H57.305L41.9428 0.363635H50.6147Z"
+            fill="#FBBA0E"/>
+        </svg>
+      </div>
+      {isLoading && <LoaderComponent/>}
       <div className={styles.vkBtn} ref={ref}></div>
     </div>
   );

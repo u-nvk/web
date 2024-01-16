@@ -27,6 +27,7 @@ import ru from "date-fns/locale/ru"; // the locale you want
 import { useApi } from "../../../../../../hooks/utils/use-api.hook.ts";
 import toast from "react-hot-toast";
 import { InputComponent } from "../../../../../../components/input/input.component.tsx";
+import {defaultPlaces} from "../../../../../../pipes/format-route.pipe.ts";
 
 registerLocale("ru", ru); // register it with the name you want
 
@@ -54,23 +55,6 @@ const defaultDirections: CustomChip[] = [
     title: "Из кампуса",
     value: "NVK",
   },
-];
-
-const defaultPlaces: IPlace[] = [
-  { value: "MUB", label: "ГУК" },
-  { value: "D11", label: "Общежитие №11" },
-  { value: "G8M", label: "Гринвич со стороны 8 марта" },
-  { value: "UGI", label: "УГИ" },
-  { value: "BT", label: "Метро Ботаническая" },
-  { value: "RTF", label: "ИРИТ-РТФ" },
-  { value: "RV", label: "ЖД Вокзал" },
-  { value: "AR", label: "Екатеринбург-Арена" },
-  { value: "INEU", label: "Корпус ИНЭУ, Гоголя 25" },
-  { value: "IENIM", label: "Корпус ИЕНиМ, Куйбышева 48" },
-  { value: "VZ", label: "ВИЗ" },
-  { value: "UM", label: "Уралмаш" },
-  { value: "YV", label: "Южный автовокзал" },
-  { value: "VTOR", label: "Вторчермет" },
 ];
 
 const customStyles = {

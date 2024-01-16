@@ -7,6 +7,10 @@ export const makeReq = async <Res>(url: string, options: RequestInit): Promise<R
     throw new UnauthError()
   }
 
+  if (res.status === 500) {
+    throw new Error();
+  }
+
   const responseDto = await res.json();
   return responseDto;
 }

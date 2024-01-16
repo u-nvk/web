@@ -24,6 +24,7 @@ import { LoaderComponent } from "../../../../../../components/loader/loader.comp
 import { ErrorBannerComponent } from "../../../../../../components/error-banner/error-banner.component.tsx";
 import {useApi} from "../../../../../../hooks/utils/use-api.hook.ts";
 import toast from "react-hot-toast";
+import {declineOrderApi} from "../../../../../../api/decline-order/decline-order.api.ts";
 
 const redirectToVkById = (vkId: number): void => {
   window.open(`https://vk.com/id${vkId}`, "__blank");
@@ -41,6 +42,7 @@ export const OrderViewPage = () => {
   const navigate = useNavigate();
   const api = useApi();
   const [isPassedOrder, setIsPassedOrder] = useState(false);
+  const [isStartWithin15Mins, setIsStartWithin15Mins] = useState(false);
   const [order, setOrder] = useState<GetOrderResponseDto | null>(null);
   const [isLoading, setLoading] = useState<boolean>(true);
   const [isErrorInRequests, setErrorInRequests] = useState(false);
@@ -105,6 +107,13 @@ export const OrderViewPage = () => {
           setIsPassedOrder(false);
         }
 
+        // 900000 ms = 15 min
+        if (new Date(data.timeStart).getTime() - new Date().getTime() < 900000) {
+          setIsStartWithin15Mins(true);
+        } else {
+          setIsStartWithin15Mins(false);
+        }
+
         const userPid = userPidGetter();
 
         setParticipants(data.participants);
@@ -146,6 +155,22 @@ export const OrderViewPage = () => {
       navigate("/cabinet/orders");
     }
   };
+
+  const declineOrder = async () => {
+    if (isStartWithin15Mins) {
+      toast.error('Невозможно отменить поездку')
+      return;
+    }
+
+    if (order?.id) {
+      try {
+        await declineOrderApi(accessTokenGetter(), order.id);
+      } catch {
+        toast.error('Невозможно отменить поездку')
+      }
+
+    }
+  }
 
   useEffect(() => {
     let interval: number | null = null;
@@ -237,6 +262,15 @@ export const OrderViewPage = () => {
                   {formatDatePipe(order.timeStart)}
                 </div>
               </div>
+              {
+                order.isDeclined &&
+                  <div className={styles.contentLine}>
+                      <div className={`lightText ${styles.littleText}`}>статус</div>
+                      <div className={`mediumText ${styles.infoText}`}>
+                        Отклонена
+                      </div>
+                  </div>
+              }
               <div className={`${styles.contentLine}`}>
                 <div className={`lightText ${styles.littleText}`}>водитель</div>
                 <div className={`mediumText ${styles.infoText}`}>
@@ -317,7 +351,7 @@ export const OrderViewPage = () => {
             ))}
           </div>
         )}
-        {!isPassedOrder &&
+        {!isPassedOrder && !order.isDeclined &&
           <div
             className={`${styles.wrapperBtn} ${
               !isJoined && !isErrorWhenTryJoin && !isOrderDriver
@@ -349,6 +383,7 @@ export const OrderViewPage = () => {
             )}
           </div>
         }
+        {!isPassedOrder && isOrderDriver && !order.isDeclined && !isStartWithin15Mins && <div onClick={declineOrder} className={`${styles.wrapperBtn} ${styles.wrapperBtnError}`}><span className={`regularText ${styles.text}`}>Отменить</span></div>}
       </div>
     );
   }

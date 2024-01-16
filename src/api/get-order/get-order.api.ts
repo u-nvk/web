@@ -2,6 +2,7 @@ import {makeReq} from "../make-req.ts";
 
 export interface GetOrderResponseDto {
   id: string;
+  isDeclined: boolean;
   driverPid: string;
   price: number;
   comment: string;
