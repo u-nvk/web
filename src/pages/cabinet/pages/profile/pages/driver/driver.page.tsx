@@ -241,7 +241,7 @@ export const DriverPage = () => {
                 title={"Добавить"}
                 onClick={() => {
                   ym(96148686, "reachGoal", "btn-driversInfo-add"),
-                    createNewTransport;
+                    createNewTransport();
                 }}
               />
             </div>
