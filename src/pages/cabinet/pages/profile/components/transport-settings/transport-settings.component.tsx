@@ -15,7 +15,7 @@ export interface ITransportSettings {
   originTransport?: GetTransportsItemResponseDto;
 }
 
-const regexp = /^[АВЕКМНОРСТУХ]\d{3}(?<!000)[АВЕКМНОРСТУХ]{2}\d{2,3}$/ui;
+const regexp = /^[АВЕКМНОРСТУХ]\d{3}[АВЕКМНОРСТУХ]{2}\d{2,3}$/ui;
 
 export const TransportSettingsComponent: FC<ITransportSettings> = ({ isAlreadyExist, onDelete, onSave, originTransport }) => {
   const [transport, setTransport] = useState<Partial<GetTransportsItemResponseDto>>(originTransport ?? {})
