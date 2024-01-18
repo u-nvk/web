@@ -4,7 +4,6 @@ export interface GetHistoryOrdersResponseDto {
   list: {
     id: string;
     orderId: string;
-    userPid: string;
     driverPid: string;
     price: number;
     timeStart: string;
