@@ -71,6 +71,7 @@ const defaultPlaces: IPlace[] = [
   { value: "UM", label: "Уралмаш" },
   { value: "YV", label: "Южный автовокзал" },
   { value: "VTOR", label: "Вторчермет" },
+  { value: "D3", label: "Общежитие №3" }
 ];
 
 const customStyles = {
