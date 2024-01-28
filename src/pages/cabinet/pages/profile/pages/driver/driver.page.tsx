@@ -21,6 +21,7 @@ import { useApi } from "../../../../../../hooks/utils/use-api.hook.ts";
 import { TransportSettingsComponent } from "../../components/transport-settings/transport-settings.component.tsx";
 import { markTransportAsUnactiveApi } from "../../../../../../api/bind-transport/mark-transport-as-unactive.api.ts";
 import toast from "react-hot-toast";
+import {readEnv} from "../../../../../../hooks/utils/env.utils.ts";
 
 const bankOptions = [
   { value: "0", label: "Сбербанк" },
@@ -240,10 +241,8 @@ export const DriverPage = () => {
               <ButtonComponent
                 title={"Добавить"}
                 onClick={() => {
-                  //@ts-ignore
-                  if (ym) {
-                    //@ts-ignore
-                    ym(96148686, "reachGoal", "btn-driversInfo-add");
+                  if (readEnv().isUseYandexMetric) {
+                    window.ym?.(96148686, "reachGoal", "btn-driversInfo-add");
                   }
                   createNewTransport();
                 }}

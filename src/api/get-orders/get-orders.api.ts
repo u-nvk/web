@@ -18,7 +18,7 @@ export interface GetOrdersResponseDto {
 export const getOrders = async (
   accessToken: string,
 ) => {
-  const res = await makeReq<GetOrdersResponseDto>("https://urfu-nvk.ru/order/api/v1/order", {
+  const res = await makeReq<GetOrdersResponseDto>("order/api/v1/order", {
     headers: {
       "Content-Type": "application/json",
       "Authorization": `${accessToken}`,

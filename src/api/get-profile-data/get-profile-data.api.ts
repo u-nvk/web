@@ -8,7 +8,7 @@ export interface GetDataByUseridResponseDto {
 }
 
 export const getProfileData = async (accessToken: string, userPid: string) => {
-  const res = await makeReq<GetDataByUseridResponseDto>(`https://urfu-nvk.ru/profile/api/v1/data/user/${userPid}`, {
+  const res = await makeReq<GetDataByUseridResponseDto>(`profile/api/v1/data/user/${userPid}`, {
     headers: {
       "Content-Type": "application/json",
       "Authorization": `${accessToken}`,

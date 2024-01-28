@@ -24,6 +24,7 @@ import {
 import { ButtonComponent } from "../../../../components/button/button.component.tsx";
 import { useApi } from "../../../../hooks/utils/use-api.hook.ts";
 import { LoaderComponent } from "../../../../components/loader/loader.component.tsx";
+import {readEnv} from "../../../../hooks/utils/env.utils.ts";
 
 const defaultDirections: IChip[] = [
   {
@@ -73,13 +74,7 @@ export const OrdersPage = () => {
         } else {
           return order.route.from === "NVK";
         }
-      })
-      .filter(
-        (item) =>
-          item.leftCount > 0 ||
-          isUserJoin(item.participantIds) ||
-          isUserDriver(item.driverPid)
-      );
+      });
 
     const resultMap: Map<string, GetOrdersResponseDto["orders"]> = new Map();
 
@@ -147,12 +142,10 @@ export const OrdersPage = () => {
           <ButtonComponent
             title={"Добавить"}
             onClick={() => {
-              //@ts-ignore
-              if (ym) {
-                //@ts-ignore
-                ym(96148686, "reachGoal", "btn-orders-create-view");
+              if (readEnv().isUseYandexMetric) {
+                window.ym?.(96148686, "reachGoal", "btn-orders-create-view");
               }
-              navigateToCreateOrder()
+              navigateToCreateOrder();
             }}
           />
         </div>

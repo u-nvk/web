@@ -13,7 +13,7 @@ export interface PostCreateOrderRequestDto {
 }
 
 export const createOrderApi = async (accessToken: string, data: PostCreateOrderRequestDto) => {
-  const res = await makeReq<{ id: string }>("https://urfu-nvk.ru/order/api/v1/order", {
+  const res = await makeReq<{ id: string }>("order/api/v1/order", {
     method: "POST",
     body: JSON.stringify(data),
     headers: {

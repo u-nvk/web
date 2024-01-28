@@ -10,7 +10,7 @@ export const exchangeVkSilentTokenApi = async (
   firstname: string,
   lastname: string
 ): Promise<{ accessToken: string }> => {
-  const res = await makeReq<ExchangeVkTokenResponseDto>("https://urfu-nvk.ru/identity/api/v1/exchange-vk-token", {
+  const res = await makeReq<ExchangeVkTokenResponseDto>("identity/api/v1/exchange-vk-token", {
     method: "POST",
     body: JSON.stringify({
       vkToken: vkToken,

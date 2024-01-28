@@ -5,7 +5,7 @@ export interface JoinToOrderResponseDto {
 }
 
 export const joinToOrderApi = async (accessToken: string, orderId: string) => {
-  const res = await makeReq<JoinToOrderResponseDto>(`https://urfu-nvk.ru/order/api/v1/order/${orderId}/participants`, {
+  const res = await makeReq<JoinToOrderResponseDto>(`order/api/v1/order/${orderId}/participants`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

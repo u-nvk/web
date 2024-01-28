@@ -13,7 +13,7 @@ export interface GetTransportsItemResponseDto {
 
 export const getTransports = async (accessToken: string) => {
   const res = await makeReq<GetTransportsResponseDto>(
-    "https://urfu-nvk.ru/profile/api/v1/data/transports",
+    "profile/api/v1/data/transports",
     {
       headers: {
         "Content-Type": "application/json",

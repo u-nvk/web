@@ -28,6 +28,7 @@ import { useApi } from "../../../../../../hooks/utils/use-api.hook.ts";
 import toast from "react-hot-toast";
 import { InputComponent } from "../../../../../../components/input/input.component.tsx";
 import {defaultPlaces} from "../../../../../../pipes/format-route.pipe.ts";
+import {readEnv} from "../../../../../../hooks/utils/env.utils.ts";
 
 registerLocale("ru", ru); // register it with the name you want
 
@@ -163,6 +164,13 @@ export const OrdersCreatePage = () => {
       .catch(() => setErrorAfterCreating(true))
       .finally(() => setLoading(false));
   };
+
+  const publish = () => {
+    if (readEnv().isUseYandexMetric) {
+      window.ym?.(96148686, "reachGoal", "btn-orders-create");
+    }
+    saveOrder();
+  }
 
   const getAllTransports = async () => {
     try {
@@ -347,14 +355,7 @@ export const OrdersCreatePage = () => {
         </div>
         <div
           className={styles.wrapperBtn}
-          onClick={() => {
-            //@ts-ignore
-            if (ym) {
-              //@ts-ignore
-              ym(96148686, "reachGoal", "btn-orders-create");
-            }
-            saveOrder();
-          }}
+          onClick={publish}
         >
           <span className={`regularText ${styles.text}`}>Опубликовать</span>
         </div>

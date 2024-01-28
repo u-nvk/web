@@ -34,7 +34,7 @@ export const getOrderApi = async (
   accessToken: string,
   orderId: string,
 ) => {
-  const res = await makeReq<GetOrderResponseDto>("https://urfu-nvk.ru/order/api/v1/order/" + orderId, {
+  const res = await makeReq<GetOrderResponseDto>("order/api/v1/order/" + orderId, {
     headers: {
       "Content-Type": "application/json",
       "Authorization": `${accessToken}`,

@@ -6,7 +6,7 @@ export interface PostProfileDataRequestDto {
 }
 
 export const setProfileDataApi = async (accessToken: string, body: PostProfileDataRequestDto) => {
-  await makeReq("https://urfu-nvk.ru/profile/api/v1/data/user", {
+  await makeReq("profile/api/v1/data/user", {
     method: "POST",
     body: JSON.stringify(body),
     headers: {
